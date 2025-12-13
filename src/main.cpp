@@ -6,6 +6,8 @@
 #include <thread>
 constexpr double PI = 3.14159;
 
+namespace HitBox
+{ 
 class Circle 
 {
     public:
@@ -70,9 +72,41 @@ class Square
         const double CenterX,CenterY;
         const double Height,Width;
 };
+};
+//These will be the main components for hitboxes
+
+namespace Player
+{
+    enum class CollisionStates
+    {
+        NoCollision,
+        HeadCollision,
+        BodyCollision,
+        FeetCollision
+    };
+
+    class Player
+    {
+        public:
+            template<class ColisionObject>
+            CollisionStates CheckCollision(ColisionObject& Object) const
+            {
+                
+            }
+            //templated function to not rewrite every type of collision with every object 
+        private:
+            HitBox::Circle headPart;
+            HitBox::Square bodyPart;
+        //The hitbox of a player will be created from 2 objects a Circle and a square
+        //The head will interact with either a ceiling or other flying objects 
+        //The body will interact with the ground, slopes or any other part
+        //The game i intend to create will be pixelated so i do not need a circle as the body to create smoothness as the enviroment will be square
+    };
+}
+
 int main() {
-    Circle circle(0.0,0.0,0.5);
-    Square square(0,0,0.8,0.8);
+    HitBox::Circle circle(0.0,0.0,0.5);
+    HitBox::Square square(0,0,0.8,0.8);
     glfwInit();
 
     GLFWwindow* window = glfwCreateWindow(800, 800, "OpenGL Tutorial", NULL, NULL);
@@ -80,7 +114,7 @@ int main() {
     glewInit();
     
     while (!glfwWindowShouldClose(window)) {
-        //square.render();
+        square.render();
         circle.render();
         circle.UpdateCenter(0.02,0.02);
         glfwSwapBuffers(window);
