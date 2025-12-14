@@ -4,17 +4,15 @@
 #include <chrono>
 #include <thread>
 #include "objects/objects.hpp"
-
-double TargetFrameRate = 1.0/100.0;
+#include <iostream>
+constexpr std::chrono::duration<double> TargetFrameRate = std::chrono::duration<double>(1.0/100.0);
 
 //These will be the main components for hitboxes
 
 void Update()
 {
-    HitBox::Circle circle(0.0,0.1,0.05);
-    HitBox::Square square(0,0,0.2,0.1);
+    Player::Player player;
     glfwInit();
-
     GLFWwindow* window = glfwCreateWindow(1000, 900, "OpenGL Tutorial", NULL, NULL);
     glfwMakeContextCurrent(window);
     glewInit();
@@ -22,18 +20,23 @@ void Update()
     while (!glfwWindowShouldClose(window)) 
     {
         auto CurrentTime = std::chrono::high_resolution_clock::now();
-        square.render();
-        circle.render();
-        //circle.UpdateCenter(0.02,0.02);
+        glClear(GL_COLOR_BUFFER_BIT);
+        
+        player.Render();
+        std::chrono::duration<double> RawDeltaTime = CurrentTime-LastTime;
+        double DeltaTime = RawDeltaTime.count(); 
+        player.UpdatePositions(window,DeltaTime);
+        std::cout<<DeltaTime<<'\n';
+        
         glfwSwapBuffers(window);
         glfwPollEvents();
 
         auto EndTime = std::chrono::high_resolution_clock::now();
         auto DurationTime = EndTime - CurrentTime;
-
-        if(TargetFrameRate > DurationTime.count())
+        LastTime = CurrentTime;
+        if(TargetFrameRate > DurationTime)
         {
-            double SleepTime = TargetFrameRate - DurationTime.count();
+            auto SleepTime = TargetFrameRate - DurationTime;
 
             std::this_thread::sleep_for(SleepTime);
         }

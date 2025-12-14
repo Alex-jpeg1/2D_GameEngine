@@ -1,4 +1,6 @@
 #pragma once
+#include <GLFW/glfw3.h>
+
 constexpr double PI = 3.14159;
 
 
@@ -14,7 +16,11 @@ namespace BasicObject
 {
     class BasicObject
     {
-
+        public:
+            BasicObject(double _CenterX, double _CenterY);
+            virtual void UpdateCenter(double _UpdateX, double _UpdateY);
+        protected:
+            double CenterX,CenterY;
     };
     //The basic object will check for collisions with every other object
     //The basic object will check for the relative position of the surrounding objects
@@ -23,27 +29,24 @@ namespace BasicObject
 
 namespace HitBox
 { 
-class Circle 
+class HalfCircle: public BasicObject::BasicObject
 {
     public:
-        Circle(double _CenterX, double _CenterY, double _radius);
+        HalfCircle(double _CenterX, double _CenterY, double _radius, int _NumberVertices);
         void render() const;
-        void UpdateCenter(double _UpdateX, double _UpdateY);
     private:
-        const int NumberVertices = 100;
-        double CenterX,CenterY; 
+        const int NumberVertices;
         const double radius;
 };
-class Square
+class Square: public BasicObject::BasicObject
 {
     public: 
         Square(double _CenterX, double _CenterY, double _Height, double _Width);
         void render() const;
-        template<class CollisionObject>
-        CollisionStates CheckCollision(CollisionObject& Object) const;
+        //template<class CollisionObject>
+        //CollisionStates CheckCollision(CollisionObject& Object) const;
 
     private:
-        const double CenterX,CenterY;
         const double Height,Width;
 };
 };
@@ -54,12 +57,29 @@ namespace Player
     class Player
     {
         public:
-            template<class ColisionObject>
-            CollisionStates CheckCollision(ColisionObject& Object) const;
+            Player();
+            //template<class ColisionObject>
+            //CollisionStates CheckCollision(ColisionObject& Object) const;
+
+            void UpdatePositions(GLFWwindow* window, double DeltaTime)
+            {
+                if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+                {
+                    headPart.UpdateCenter(velocity * DeltaTime, 0);
+                    bodyPart.UpdateCenter(velocity * DeltaTime, 0);
+                    //Update the X position of the objects 
+                }
+            }
+            void Render()
+            {
+                bodyPart.render();
+                headPart.render();
+            }
             //templated function to not rewrite every type of collision with every object 
         private:
-            HitBox::Circle headPart;
+            HitBox::HalfCircle headPart;
             HitBox::Square bodyPart;
+            const double velocity = 0.1;  
         //The hitbox of a player will be created from 2 objects a Circle and a square
         //The head will interact with either a ceiling or other flying objects 
         //The body will interact with the ground, slopes or any other part
