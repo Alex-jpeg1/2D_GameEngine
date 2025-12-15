@@ -66,3 +66,15 @@ void HitBox::Square::render() const
 
     glEnd();
 }
+double HitBox::Square::ReturnPositionY()
+{
+    return CenterY;
+}
+double HitBox::Square::ReturnHeight()
+{
+    return Height;
+}
+double HitBox::Square::ReturnTop()
+{
+    return (ReturnPositionY() + ReturnHeight() / 2);
+}

@@ -1,9 +1,11 @@
 #pragma once
 #include <GLFW/glfw3.h>
 #include <csetjmp>
+#include <type_traits>
 
 constexpr double PI = 3.14159;
 
+extern int contor;
 
 enum class CollisionStates
 {
@@ -12,6 +14,7 @@ enum class CollisionStates
     BodyCollision,
     FeetCollision
 };
+
 
 namespace BasicObject
 {
@@ -37,8 +40,8 @@ class HalfCircle: public BasicObject::BasicObject
         HalfCircle();
         HalfCircle(double _CenterX, double _CenterY, double _radius, int _NumberVertices);
         void render() const;
-        template <class CollisionObject>
-        CollisionStates CheckCollision(CollisionObject& object) const;
+        //template <class CollisionObject>
+        //CollisionStates CheckCollision(CollisionObject& object);
 
     private:
         const int NumberVertices;
@@ -50,13 +53,40 @@ class Square: public BasicObject::BasicObject
         Square();
         Square(double _CenterX, double _CenterY, double _Height, double _Width);
         void render() const;
-        template<class CollisionObject>
-        CollisionStates CheckCollision(CollisionObject& Object) const;
+        double ReturnPositionY();
+        double ReturnHeight();
+        double ReturnTop();
+        //template<class CollisionObject>
+        //CollisionStates CheckCollision(CollisionObject& Object);
 
     protected:
         double Height,Width;
 };
 };
+
+namespace Surrounding
+{
+    class Ground: public HitBox::Square
+    {
+        public:
+            Ground(double _CenterX, double _CenterY, double _Height, double _Width, int _Position);
+            double ReturnTop() const;
+            double ReturnBottom() const;
+            double ReturnLeft() const;
+            double ReturnRight() const; 
+
+            void Recenter();
+
+            //This function is needed to redraw the surrounding terrain relative to the seated position of the player to not have evergrowing terrain
+            //This function can overwrite the 
+        private:
+            int Position;
+    };
+    //The ground will have a square hitbox 
+    //The ground will be positioned on the lowest part of the whole game
+    //The ground will also be composed of some hills like structure
+    //The ground will have a specific identifier to be able to assign a sprite to it 
+}
 
 namespace Player
 {
@@ -65,8 +95,18 @@ namespace Player
     {
         public:
             Player();
-            //template<class ColisionObject>
-            //CollisionStates CheckCollision(ColisionObject& Object) const;
+            template<class ColisionObject> void CheckCollision(ColisionObject& Object)
+            {
+                if constexpr (std::is_same_v<ColisionObject, Surrounding::Ground>)
+                {
+                    if(CalculateFeet() < Object.ReturnTop())
+                    {
+                        headPart.UpdateCenter(0, Object.ReturnTop() - CalculateFeet());
+                        bodyPart.UpdateCenter(0, Object.ReturnTop() - CalculateFeet());
+                        isGrounded = true;
+                    }
+                }
+            }
             //Templated function to not rewrite every type of collision with every object 
             //This function will call the specific object Collision  
             void UpdatePositions(GLFWwindow* window, double DeltaTime)
@@ -77,10 +117,25 @@ namespace Player
                     bodyPart.UpdateCenter(velocity * DeltaTime, 0);
                     //Update the X position of the objects 
                 }
-                if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+                if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS && isGrounded)
                 {
-                    headPart.UpdateCenter(0, jumpVelocity * DeltaTime);
-                    bodyPart.UpdateCenter(0, jumpVelocity * DeltaTime);
+                    FallingSpeed = 2;
+                    isGrounded = false;
+                    MaximumHeightTouched = bodyPart.ReturnPositionY() + maxHeightJump;
+                    isInJump = true;
+                }
+                if(!isGrounded)
+                {
+                    bodyPart.UpdateCenter(0, FallingSpeed * DeltaTime);
+                    headPart.UpdateCenter(0, FallingSpeed * DeltaTime);
+
+                    if(isInJump && bodyPart.ReturnPositionY() >= MaximumHeightTouched)
+                    {
+                        headPart.UpdateCenter(0, MaximumHeightTouched-bodyPart.ReturnPositionY());
+                        bodyPart.UpdateCenter(0, MaximumHeightTouched-bodyPart.ReturnPositionY());
+                        FallingSpeed = -2;
+                        isInJump = false;
+                    }
                 }
             }
             void Render()
@@ -89,10 +144,15 @@ namespace Player
                 headPart.render();
             }
         private:
+            double CalculateFeet();
             HitBox::HalfCircle headPart;
             HitBox::Square bodyPart;
             const double velocity = 0.1;  
-            const double jumpVelocity = 1;
+            double FallingSpeed = -2;
+            bool isGrounded=true;
+            double maxHeightJump = 0.2;
+            double MaximumHeightTouched = 0; 
+            double isInJump = false;
         //The hitbox of a player will be created from 2 objects a Circle and a square
         //The head will interact with either a ceiling or other flying objects 
         //The body will interact with the ground, slopes or any other part
@@ -100,26 +160,3 @@ namespace Player
     };
 }
 
-namespace Surrounding
-{
-    class Ground: public HitBox::Square
-    {
-        public:
-            Ground();
-            double ReturnTop() const;
-            double ReturnBottom() const;
-            double ReturnLeft() const;
-            double ReturnRight() const; 
-
-            void Recenter();
-            //This function is needed to redraw the surrounding terrain relative to the seated position of the player to not have evergrowing terrain
-            //This function can overwrite the 
-        private:
-
-
-    };
-    //The ground will have a square hitbox 
-    //The ground will be positioned on the lowest part of the whole game
-    //The ground will also be composed of some hills like structure
-    //The ground will have a specific identifier to be able to assign a sprite to it 
-}
