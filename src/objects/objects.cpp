@@ -66,15 +66,31 @@ void HitBox::Square::render() const
 
     glEnd();
 }
-double HitBox::Square::ReturnPositionY()
+double HitBox::Square::ReturnPositionY() const 
 {
     return CenterY;
 }
-double HitBox::Square::ReturnHeight()
+double HitBox::Square::ReturnHeight() const 
 {
     return Height;
 }
-double HitBox::Square::ReturnTop()
+double HitBox::Square::ReturnTop()const 
 {
     return (ReturnPositionY() + ReturnHeight() / 2);
+}
+double HitBox::Square::ReturnPositionX() const
+{
+    return CenterX;
+}
+double HitBox::Square::ReturnWidth() const 
+{
+    return Width;
+}
+double HitBox::Square::ReturnLeft() const
+{
+    return (ReturnPositionX() - ReturnWidth() / 2);
+}
+double HitBox::Square::ReturnRight() const
+{
+    return (ReturnPositionX() + ReturnWidth() / 2);
 }

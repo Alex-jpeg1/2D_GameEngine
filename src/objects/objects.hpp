@@ -53,9 +53,14 @@ class Square: public BasicObject::BasicObject
         Square();
         Square(double _CenterX, double _CenterY, double _Height, double _Width);
         void render() const;
-        double ReturnPositionY();
-        double ReturnHeight();
-        double ReturnTop();
+        double ReturnPositionY() const ;
+        double ReturnHeight() const ;
+        double ReturnTop() const ;
+        double ReturnPositionX() const ;
+        double ReturnWidth() const ;
+        double ReturnLeft() const ;
+        double ReturnRight() const ;
+
         //template<class CollisionObject>
         //CollisionStates CheckCollision(CollisionObject& Object);
 
@@ -78,7 +83,6 @@ namespace Surrounding
             void Recenter();
 
             //This function is needed to redraw the surrounding terrain relative to the seated position of the player to not have evergrowing terrain
-            //This function can overwrite the 
         private:
             int Position;
     };
@@ -99,11 +103,18 @@ namespace Player
             {
                 if constexpr (std::is_same_v<ColisionObject, Surrounding::Ground>)
                 {
-                    if(CalculateFeet() < Object.ReturnTop())
+                    if(bodyPart.ReturnLeft() < Object.ReturnRight() && bodyPart.ReturnRight() > Object.ReturnLeft())
                     {
-                        headPart.UpdateCenter(0, Object.ReturnTop() - CalculateFeet());
-                        bodyPart.UpdateCenter(0, Object.ReturnTop() - CalculateFeet());
-                        isGrounded = true;
+                        if(CalculateFeet() < Object.ReturnTop())
+                        {
+                            headPart.UpdateCenter(0, Object.ReturnTop() - CalculateFeet());
+                            bodyPart.UpdateCenter(0, Object.ReturnTop() - CalculateFeet());
+                            isGrounded = true;
+                        }
+                    }
+                    else  
+                    {
+                        isGrounded = false;
                     }
                 }
             }
@@ -138,6 +149,7 @@ namespace Player
                     }
                 }
             }
+
             void Render()
             {
                 bodyPart.render();
@@ -149,7 +161,7 @@ namespace Player
             HitBox::Square bodyPart;
             const double velocity = 0.1;  
             double FallingSpeed = -2;
-            bool isGrounded=true;
+            bool isGrounded=false;
             double maxHeightJump = 0.2;
             double MaximumHeightTouched = 0; 
             double isInJump = false;
@@ -159,4 +171,3 @@ namespace Player
         //The game i intend to create will be pixelated so i do not need a circle as the body to create smoothness as the enviroment will be square
     };
 }
-

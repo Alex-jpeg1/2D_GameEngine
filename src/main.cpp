@@ -67,6 +67,7 @@ class Game{
 };
 int main() 
 {
+    
     Game game;
     std::thread t1(&Game::Game::ResourceFetch, &game); 
     game.Update();
