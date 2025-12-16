@@ -2,10 +2,12 @@
 #include <GLFW/glfw3.h>
 #include <csetjmp>
 #include <type_traits>
+#include <math.h>
+#include <cmath> 
 
-constexpr double PI = 3.14159;
-
-extern int contor;
+constexpr long double PI = 3.14159;
+constexpr long long SCALING_FACTOR = 100000000000LL; 
+extern long double contor;
 
 enum class CollisionStates
 {
@@ -22,10 +24,10 @@ namespace BasicObject
     {
         public:
             BasicObject();
-            BasicObject(double _CenterX, double _CenterY);
-            virtual void UpdateCenter(double _UpdateX, double _UpdateY);
+            BasicObject(long double _CenterX, long double _CenterY);
+            virtual void UpdateCenter(long double _UpdateX, long double _UpdateY);
         protected:
-            double CenterX,CenterY;
+            long double CenterX,CenterY;
     };
     //The basic object will check for collisions with every other object
     //The basic object will check for the relative position of the surrounding objects
@@ -38,34 +40,35 @@ class HalfCircle: public BasicObject::BasicObject
 {
     public:
         HalfCircle();
-        HalfCircle(double _CenterX, double _CenterY, double _radius, int _NumberVertices);
+        HalfCircle(long double _CenterX, long double _CenterY, long double _radius, int _NumberVertices);
         void render() const;
         //template <class CollisionObject>
         //CollisionStates CheckCollision(CollisionObject& object);
 
     private:
         const int NumberVertices;
-        const double radius;
+        const long double radius;
 };
 class Square: public BasicObject::BasicObject
 {
     public: 
         Square();
-        Square(double _CenterX, double _CenterY, double _Height, double _Width);
+        Square(long double _CenterX, long double _CenterY, long double _Height, long double _Width);
         void render() const;
-        double ReturnPositionY() const ;
-        double ReturnHeight() const ;
-        double ReturnTop() const ;
-        double ReturnPositionX() const ;
-        double ReturnWidth() const ;
-        double ReturnLeft() const ;
-        double ReturnRight() const ;
+        long double ReturnPositionY() const ;
+        long double ReturnHeight() const ;
+        long double ReturnTop() const ;
+        long double ReturnPositionX() const ;
+        long double ReturnWidth() const ;
+        long double ReturnLeft() const ;
+        long double ReturnRight() const ;
+        long double ReturnBottom() const;
 
         //template<class CollisionObject>
         //CollisionStates CheckCollision(CollisionObject& Object);
 
     protected:
-        double Height,Width;
+        long double Height,Width;
 };
 };
 
@@ -74,11 +77,10 @@ namespace Surrounding
     class Ground: public HitBox::Square
     {
         public:
-            Ground(double _CenterX, double _CenterY, double _Height, double _Width, int _Position);
-            double ReturnTop() const;
-            double ReturnBottom() const;
-            double ReturnLeft() const;
-            double ReturnRight() const; 
+            Ground(long double _CenterX, long double _CenterY, long double _Height, long double _Width, int _Position);
+            long double ReturnTop() const;
+            long double ReturnLeft() const;
+            long double ReturnRight() const; 
 
             void Recenter();
 
@@ -103,24 +105,67 @@ namespace Player
             {
                 if constexpr (std::is_same_v<ColisionObject, Surrounding::Ground>)
                 {
-                    if(bodyPart.ReturnLeft() < Object.ReturnRight() && bodyPart.ReturnRight() > Object.ReturnLeft())
+                    if(((bodyPart.ReturnTop() > Object.ReturnBottom()) && (bodyPart.ReturnBottom() < Object.ReturnTop())))
                     {
-                        if(CalculateFeet() < Object.ReturnTop())
+                        if(bodyPart.ReturnBottom() < Object.ReturnTop())
                         {
-                            headPart.UpdateCenter(0, Object.ReturnTop() - CalculateFeet());
-                            bodyPart.UpdateCenter(0, Object.ReturnTop() - CalculateFeet());
-                            isGrounded = true;
+                            contor = bodyPart.ReturnBottom();
+                        }
+                        // Scalare
+                        long long playerRightScaled = (long long)(bodyPart.ReturnRight() * SCALING_FACTOR);
+                        long long objectLeftScaled = (long long)(Object.ReturnLeft() * SCALING_FACTOR);
+                        long long playerLeftScaled = (long long)(bodyPart.ReturnLeft() * SCALING_FACTOR);
+                        long long objectRightScaled = (long long)(Object.ReturnRight() * SCALING_FACTOR);
+
+                        if(Object.ReturnPositionX() > bodyPart.ReturnPositionX())
+                        {
+                            if(bodyPart.ReturnRight() > Object.ReturnLeft())
+                            {
+                                long double updateX = (long double)(objectLeftScaled - playerRightScaled) / SCALING_FACTOR;
+                                headPart.UpdateCenter(updateX, 0);
+                                bodyPart.UpdateCenter(updateX, 0);
+                            }
+                        }
+                        else if(Object.ReturnPositionX() < bodyPart.ReturnPositionX())
+                        {
+                            if(Object.ReturnRight() > bodyPart.ReturnLeft())
+                            {
+                                long double updateX = (long double)(objectRightScaled - playerLeftScaled) / SCALING_FACTOR;
+                                headPart.UpdateCenter(updateX, 0);
+                                bodyPart.UpdateCenter(updateX, 0);   
+                            }
                         }
                     }
-                    else  
+                    if(bodyPart.ReturnLeft() < Object.ReturnRight() && bodyPart.ReturnRight() > Object.ReturnLeft())
+                    {
+                        long long calculateFeetScaled = (long long)(CalculateFeet() * SCALING_FACTOR);
+                        long long objectTopScaled = (long long)(Object.ReturnTop() * SCALING_FACTOR);
+
+                        if(CalculateFeet() < Object.ReturnTop())
+                        {
+                            long double penetrationDepth = (long double)(objectTopScaled - calculateFeetScaled - OffSet * SCALING_FACTOR) / SCALING_FACTOR;
+
+                            hasGround = true;
+                            headPart.UpdateCenter(0, penetrationDepth);
+                            bodyPart.UpdateCenter(0, penetrationDepth);
+                            isGrounded = true;
+                        }
+                        else 
+                        {
+                            isGrounded = false;
+                            hasGround = false;
+                        }
+                    }
+                    else if(!hasGround) 
                     {
                         isGrounded = false;
                     }
+                    //This is the collision for the ground
                 }
             }
             //Templated function to not rewrite every type of collision with every object 
             //This function will call the specific object Collision  
-            void UpdatePositions(GLFWwindow* window, double DeltaTime)
+            void UpdatePositions(GLFWwindow* window, long double DeltaTime)
             {
                 if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
                 {
@@ -128,12 +173,19 @@ namespace Player
                     bodyPart.UpdateCenter(velocity * DeltaTime, 0);
                     //Update the X position of the objects 
                 }
+                if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+                {
+                    headPart.UpdateCenter(-velocity * DeltaTime, 0);
+                    bodyPart.UpdateCenter(-velocity * DeltaTime, 0);
+                    //Update the X position of the objects 
+                }
                 if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS && isGrounded)
                 {
-                    FallingSpeed = 2;
+                    FallingSpeed = abs(FallingSpeed);
                     isGrounded = false;
                     MaximumHeightTouched = bodyPart.ReturnPositionY() + maxHeightJump;
                     isInJump = true;
+                    hasGround = false;
                 }
                 if(!isGrounded)
                 {
@@ -142,9 +194,14 @@ namespace Player
 
                     if(isInJump && bodyPart.ReturnPositionY() >= MaximumHeightTouched)
                     {
-                        headPart.UpdateCenter(0, MaximumHeightTouched-bodyPart.ReturnPositionY());
-                        bodyPart.UpdateCenter(0, MaximumHeightTouched-bodyPart.ReturnPositionY());
-                        FallingSpeed = -2;
+                        long long maxHitScaled = (long long)(MaximumHeightTouched * SCALING_FACTOR);
+                        long long bodyYScaled = (long long)(bodyPart.ReturnPositionY() * SCALING_FACTOR);
+
+                        long double correction = (long double)(maxHitScaled - bodyYScaled ) / SCALING_FACTOR;
+
+                        headPart.UpdateCenter(0, correction );
+                        bodyPart.UpdateCenter(0, correction );
+                        FallingSpeed = -abs(FallingSpeed);
                         isInJump = false;
                     }
                 }
@@ -156,15 +213,17 @@ namespace Player
                 headPart.render();
             }
         private:
-            double CalculateFeet();
+            long double CalculateFeet();
             HitBox::HalfCircle headPart;
             HitBox::Square bodyPart;
-            const double velocity = 0.1;  
-            double FallingSpeed = -2;
+            const long double velocity = 0.3;  
+            long double FallingSpeed = -1.8;
             bool isGrounded=false;
-            double maxHeightJump = 0.2;
-            double MaximumHeightTouched = 0; 
-            double isInJump = false;
+            long double maxHeightJump = 0.4;
+            long double MaximumHeightTouched = 0; 
+            long double isInJump = false;
+            bool hasGround = false;
+            long double OffSet = 0.000000000001;
         //The hitbox of a player will be created from 2 objects a Circle and a square
         //The head will interact with either a ceiling or other flying objects 
         //The body will interact with the ground, slopes or any other part

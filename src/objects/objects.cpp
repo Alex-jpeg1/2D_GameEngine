@@ -5,11 +5,11 @@
 #include "objects.hpp"
 #include "../resources/resources.hpp"
 
-BasicObject::BasicObject::BasicObject(double _CenterX, double _CenterY):CenterX{_CenterX},
+BasicObject::BasicObject::BasicObject(long double _CenterX, long double _CenterY):CenterX{_CenterX},
                                                                         CenterY{_CenterY}
 {}
 
-void BasicObject::BasicObject::UpdateCenter(double _UpdateX, double _UpdateY)
+void BasicObject::BasicObject::UpdateCenter(long double _UpdateX, long double _UpdateY)
 {
     CenterX += _UpdateX;
     CenterY += _UpdateY;
@@ -20,7 +20,7 @@ Player::Player::Player():headPart{DEFAULT_CENTERX, DEFAULT_CENTERY + DEVIATION, 
 {
 }
 
-HitBox::HalfCircle::HalfCircle(double _CenterX, double _CenterY, double _radius, int _NumberVertices): 
+HitBox::HalfCircle::HalfCircle(long double _CenterX, long double _CenterY, long double _radius, int _NumberVertices): 
                                                                                 BasicObject::BasicObject{_CenterX,_CenterY},
                                                                                 radius{_radius},
                                                                                 NumberVertices{_NumberVertices}{}
@@ -31,7 +31,7 @@ void HitBox::HalfCircle::render() const
 
     for(int i{0}; i<=NumberVertices; i++)
     {
-        double angle = PI * (static_cast<double>(i) / static_cast<double>(NumberVertices));
+        long double angle = PI * (static_cast<long double>(i) / static_cast<long double>(NumberVertices));
         float x = CenterX + radius*cos(angle);
         float y = CenterY + radius*sin(angle);
         glVertex2f(x,y);
@@ -39,7 +39,7 @@ void HitBox::HalfCircle::render() const
     glEnd();
 }
 
-HitBox::Square::Square(double _CenterX, double _CenterY, double _Height, double _Width):
+HitBox::Square::Square(long double _CenterX, long double _CenterY, long double _Height, long double _Width):
                                                                                         BasicObject::BasicObject{_CenterX, _CenterY},
                                                                                         Height{_Height},
                                                                                         Width{_Width}{}
@@ -48,8 +48,8 @@ void HitBox::Square::render() const
 {
     glBegin(GL_TRIANGLES);
 
-    double HalfHeight = Height/2;
-    double HalfWidth = Width/2;
+    long double HalfHeight = Height/2;
+    long double HalfWidth = Width/2;
 
     float YUp = CenterY + HalfHeight;
     float YDown = CenterY - HalfHeight;
@@ -66,31 +66,35 @@ void HitBox::Square::render() const
 
     glEnd();
 }
-double HitBox::Square::ReturnPositionY() const 
+long double HitBox::Square::ReturnPositionY() const 
 {
     return CenterY;
 }
-double HitBox::Square::ReturnHeight() const 
+long double HitBox::Square::ReturnHeight() const 
 {
     return Height;
 }
-double HitBox::Square::ReturnTop()const 
+long double HitBox::Square::ReturnTop()const 
 {
     return (ReturnPositionY() + ReturnHeight() / 2);
 }
-double HitBox::Square::ReturnPositionX() const
+long double HitBox::Square::ReturnPositionX() const
 {
     return CenterX;
 }
-double HitBox::Square::ReturnWidth() const 
+long double HitBox::Square::ReturnWidth() const 
 {
     return Width;
 }
-double HitBox::Square::ReturnLeft() const
+long double HitBox::Square::ReturnLeft() const
 {
     return (ReturnPositionX() - ReturnWidth() / 2);
 }
-double HitBox::Square::ReturnRight() const
+long double HitBox::Square::ReturnRight() const
 {
     return (ReturnPositionX() + ReturnWidth() / 2);
+}
+long double HitBox::Square::ReturnBottom() const
+{
+    return CenterY - Height / 2;
 }

@@ -2,22 +2,24 @@
 #include <GL/gl.h>
 #include <GLFW/glfw3.h>
 #include <chrono>
+#include <iomanip>
 #include <thread>
 #include "objects/objects.hpp"
 #include<vector>
 #include<iostream>
-
 constexpr std::chrono::duration<double> TargetFrameRate = std::chrono::duration<double>(1.0/100.0);
 
 
-int contor = 0;
+long double contor = 0;
 //These will be the main components for hitboxes
 class Game{
     public:
         Game()
         {
             Surrounding::Ground obj(0.0, -0.9, 0.2, 0.5, 0);
+            Surrounding::Ground obj1(0.6, -0.7, 0.2, 0.5, 1);
             Ground.emplace_back(obj);
+            //Ground.emplace_back(obj1);
         }
         void Update()
         {
@@ -46,13 +48,13 @@ class Game{
             
                 auto EndTime = std::chrono::high_resolution_clock::now();
                 auto DurationTime = EndTime - CurrentTime;
-                LastTime = CurrentTime;
                 if(TargetFrameRate > DurationTime)
                 {
                     auto SleepTime = TargetFrameRate - DurationTime;
-                
+                    
                     std::this_thread::sleep_for(SleepTime);
                 }
+                LastTime = CurrentTime;
             }
             //The main loop
             glfwDestroyWindow(window);
@@ -67,14 +69,13 @@ class Game{
 };
 int main() 
 {
-    
+
     Game game;
     std::thread t1(&Game::Game::ResourceFetch, &game); 
     game.Update();
     t1.join();
-    std::cout<<contor;
+    std::cout<<std::fixed<<std::setprecision(100)<<contor;
     return 0;
 }
 //The Update Function will play in the main thread to draw in there
 //TO DO implement a second thread to load in the data of the current scene
-
