@@ -3,7 +3,6 @@
 #include <GLFW/glfw3.h>
 #include <math.h>
 #include "objects.hpp"
-#include "../resources/resources.hpp"
 
 BasicObject::BasicObject::BasicObject(long double _CenterX, long double _CenterY):CenterX{_CenterX},
                                                                         CenterY{_CenterY}
@@ -15,9 +14,10 @@ void BasicObject::BasicObject::UpdateCenter(long double _UpdateX, long double _U
     CenterY += _UpdateY;
 }
 
-Player::Player::Player():headPart{DEFAULT_CENTERX, DEFAULT_CENTERY + DEVIATION, DEFAULT_RADIUS, 50},
-                         bodyPart{DEFAULT_CENTERX,DEFAULT_CENTERY,DEFAULT_HEIGHT,DEFAULT_WIDTH}
+void BasicObject::BasicObject::OverWriteCenter(long double _UpdateX, long double _UpdateY)
 {
+    CenterX = _UpdateX;
+    CenterY = _UpdateY;
 }
 
 HitBox::HalfCircle::HalfCircle(long double _CenterX, long double _CenterY, long double _radius, int _NumberVertices): 

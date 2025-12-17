@@ -10,8 +10,16 @@
 constexpr std::chrono::duration<double> TargetFrameRate = std::chrono::duration<double>(1.0/100.0);
 
 
-long double contor = 0;
+long double contor = 0; //debug tool
 //These will be the main components for hitboxes
+
+Player::Player player; //global to call it from the call_back
+
+void call_back(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+
+}
+
 class Game{
     public:
         Game()
@@ -23,19 +31,21 @@ class Game{
         }
         void Update()
         {
-            Player::Player player;
             glfwInit();
             GLFWwindow* window = glfwCreateWindow(1000, 900, "OpenGL Tutorial", NULL, NULL);
             glfwMakeContextCurrent(window);
+            
+            glfwSetKeyCallback(window, call_back);
             glewInit();
             static auto LastTime = std::chrono::high_resolution_clock::now();
             while (!glfwWindowShouldClose(window)) 
             {
                 auto CurrentTime = std::chrono::high_resolution_clock::now();
                 glClear(GL_COLOR_BUFFER_BIT);
+
                 for(auto& ground:Ground)
                 {
-                    player.CheckCollision(ground);
+                    player.CheckCollisionY(ground);
                     ground.render();
                 }
                 player.Render();
@@ -54,6 +64,7 @@ class Game{
                     
                     std::this_thread::sleep_for(SleepTime);
                 }
+                
                 LastTime = CurrentTime;
             }
             //The main loop
