@@ -13,10 +13,15 @@ void Player::Character::Render()
 }
 
 Player::Character::Character():headPart{DEFAULT_CENTERX, DEFAULT_CENTERY + DEVIATION, DEFAULT_RADIUS, 50},
-                               bodyPart{DEFAULT_CENTERX,DEFAULT_CENTERY,DEFAULT_HEIGHT,DEFAULT_WIDTH}
+                               bodyPart{DEFAULT_CENTERX,DEFAULT_CENTERY,DEFAULT_HEIGHT,DEFAULT_WIDTH}{}
+void Player::Player::Render()
 {
+    bodyPart.render();
+    headPart.render();
 }
 
-
-long double Player::Player::
+void Player::Player::UpdateJump()
+{
+    
+}
 

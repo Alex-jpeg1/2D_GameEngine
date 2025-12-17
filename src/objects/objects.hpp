@@ -4,6 +4,7 @@
 #include <type_traits>
 #include <math.h>
 #include <cmath> 
+#include "../resources/resources.hpp"
 
 #define OFFSET 0.0001
 
@@ -27,7 +28,7 @@ namespace BasicObject
     {
         public:
             BasicObject();
-            BasicObject(long double _CenterX, long double _CenterY);
+            BasicObject(long double _CenterX, long double _CenterY, long double _Height, long double _Width);
             virtual void UpdateCenter(long double _UpdateX, long double _UpdateY);
             virtual void OverWriteCenter(long double _UpdateX, long double _UpdateY);
             virtual long double ReturnPositionY() const ;
@@ -63,7 +64,6 @@ class HalfCircle: public BasicObject::BasicObject
 
     private:
         const int NumberVertices;
-        const long double radius;
 };
 class Square: public BasicObject::BasicObject
 {
@@ -107,7 +107,8 @@ namespace Player
     class Character
     {
         public:
-            template<class ColisionObject> void CheckCollisionY(ColisionObject& Object)
+            template<class ColisionObject> 
+            void CheckCollisionY(ColisionObject& Object)
             {
                 if constexpr (std::is_same_v<ColisionObject, Surrounding::Ground>)
                 {
@@ -116,18 +117,21 @@ namespace Player
                         if(abs(bodyPart.ReturnBottom() - Object.ReturnTop()) < OFFSET)
                         {
                             isGrounded = true;
-                            bodyPart.OverWriteCenter(bodyPart.ReturnPositionX(), Object.ReturnTop() + bodyPart.ReturnLeft() / 2);
-                            headPart.OverWriteCenter(headPart.ReturnPositionX(), long double UpdateY)
+                            bodyPart.OverWriteCenter(bodyPart.ReturnPositionX(), Object.ReturnTop() + bodyPart.ReturnHeight() / 2);
+                            headPart.OverWriteCenter(headPart.ReturnPositionX(), Object.ReturnTop() + bodyPart.ReturnHeight());
                         }
                     }
                 }
             }
-            template<typename CollisionObject> CollisionStates CheckCollisionX(CollisionObject& Object)
+            template<typename CollisionObject>
+            CollisionStates CheckCollisionX(CollisionObject& Object)
             {
 
             }
+
+
             Character();
-            virtual void Render();
+            virtual void Render() = 0;
         protected:
             HitBox::HalfCircle headPart;
             HitBox::Square bodyPart;
@@ -135,7 +139,7 @@ namespace Player
             const long double velocity = 0.3;
             long double FallingSpeed = -1.8;
 
-            bool isGrounded=false;
+            Grounded isGrounded=false;
     };
 
 
@@ -145,17 +149,16 @@ namespace Player
 
             Player();
             void UpdatePositions(long double DeltaTime);
+            virtual void Render();
 
+            void UpdateJump();
         private:
             
-            long double CalculateDistance(const long double& First, const long double& Second);
-            long double CalculateFeet();
+            Distance CalculateDistance(const long double& First, const long double& Second);
+            FeetPosition CalculateFeet();
 
-            long double maxHeightJump = 0.4;
-            long double MaximumHeightTouched = 0; 
-
-            long double isInJump = false;
-            bool hasGround = false;
+            MaxJump maxHeightJump = 0.4;
+            MaxHeight MaximumHeightTouched = 0; 
 
         //The hitbox of a player will be created from 2 objects a Circle and a square
         //The head will interact with either a ceiling or other flying objects 

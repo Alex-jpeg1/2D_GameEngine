@@ -4,8 +4,10 @@
 #include <math.h>
 #include "objects.hpp"
 
-BasicObject::BasicObject::BasicObject(long double _CenterX, long double _CenterY):CenterX{_CenterX},
-                                                                        CenterY{_CenterY}
+BasicObject::BasicObject::BasicObject(long double _CenterX, long double _CenterY, long double _Height, long double _Width):CenterX{_CenterX},
+                                                                                                                           CenterY{_CenterY},
+                                                                                                                           Height{_Height},
+                                                                                                                           Width{_Width}
 {}
 
 void BasicObject::BasicObject::UpdateCenter(long double _UpdateX, long double _UpdateY)
@@ -21,8 +23,7 @@ void BasicObject::BasicObject::OverWriteCenter(long double _UpdateX, long double
 }
 
 HitBox::HalfCircle::HalfCircle(long double _CenterX, long double _CenterY, long double _radius, int _NumberVertices): 
-                                                                                BasicObject::BasicObject{_CenterX,_CenterY},
-                                                                                radius{_radius},
+                                                                                BasicObject::BasicObject{_CenterX,_CenterY,_radius,_radius},
                                                                                 NumberVertices{_NumberVertices}{}
 
 void HitBox::HalfCircle::render() const
@@ -32,21 +33,18 @@ void HitBox::HalfCircle::render() const
     for(int i{0}; i<=NumberVertices; i++)
     {
         long double angle = PI * (static_cast<long double>(i) / static_cast<long double>(NumberVertices));
-        float x = CenterX + radius*cos(angle);
-        float y = CenterY + radius*sin(angle);
+        float x = CenterX + Height*cos(angle);
+        float y = CenterY + Height*sin(angle);
         glVertex2f(x,y);
     }
     glEnd();
 }
 
-HitBox::Square::Square(long double _CenterX, long double _CenterY, long double _Height, long double _Width):
-                                                                                        BasicObject::BasicObject{_CenterX, _CenterY},
-                                                                                        Height{_Height},
-                                                                                        Width{_Width}{}
-
-void HitBox::Square::render() const
+HitBox::Square::Square(long double _CenterX, long double _CenterY, long double _Height, long double _Width):BasicObject::BasicObject{_CenterX, 
+                                                                                                                                     _CenterY,
+                                                                                                                                      _Height,
+                                                                                                                                       _Width}
 {
-    glBegin(GL_TRIANGLES);
 
     long double HalfHeight = Height/2;
     long double HalfWidth = Width/2;

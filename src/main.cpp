@@ -17,7 +17,10 @@ Player::Player player; //global to call it from the call_back
 
 void call_back(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-
+    if(key == GLFW_KEY_W && action == GLFW_PRESS)
+    {
+        
+    }
 }
 
 class Game{
