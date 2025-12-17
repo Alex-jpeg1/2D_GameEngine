@@ -114,11 +114,14 @@ namespace Player
                 {
                     if(bodyPart.ReturnLeft() < Object.ReturnRight() && bodyPart.ReturnRight() > Object.ReturnLeft())
                     {
-                        if(abs(bodyPart.ReturnBottom() - Object.ReturnTop()) < OFFSET)
+                        if(abs(bodyPart.ReturnBottom() - Object.ReturnTop()) < OFFSET || bodyPart.ReturnBottom() < Object.ReturnTop())
                         {
+
                             isGrounded = true;
-                            bodyPart.OverWriteCenter(bodyPart.ReturnPositionX(), Object.ReturnTop() + bodyPart.ReturnHeight() / 2);
-                            headPart.OverWriteCenter(headPart.ReturnPositionX(), Object.ReturnTop() + bodyPart.ReturnHeight());
+                            bodyPart.OverWriteCenter(bodyPart.ReturnPositionX(), Object.ReturnTop() + bodyPart.ReturnHeight() / 2 + OFFSET );
+                            headPart.OverWriteCenter(headPart.ReturnPositionX(), Object.ReturnTop() + bodyPart.ReturnHeight() + OFFSET);
+                            if(contor == 0)
+                                contor = bodyPart.ReturnBottom();
                         }
                     }
                 }
@@ -129,15 +132,16 @@ namespace Player
 
             }
 
-
+            virtual void UpdatePositions(DeltaTimeType DeltaTime) = 0;
             Character();
             virtual void Render() = 0;
         protected:
             HitBox::HalfCircle headPart;
             HitBox::Square bodyPart;
-
-            const long double velocity = 0.3;
-            long double FallingSpeed = -1.8;
+            
+            bool isInJump = false;
+            WalkingSpeed velocity = 0.3;
+            GravityModifier FallingSpeed = -1.8;
 
             Grounded isGrounded=false;
     };
@@ -147,8 +151,8 @@ namespace Player
     {
         public:
 
-            Player();
-            void UpdatePositions(long double DeltaTime);
+            //Player();
+            virtual void UpdatePositions(DeltaTimeType DelaTime);
             virtual void Render();
 
             void UpdateJump();
@@ -159,7 +163,9 @@ namespace Player
 
             MaxJump maxHeightJump = 0.4;
             MaxHeight MaximumHeightTouched = 0; 
+            WalkingValue dx = 0;
 
+            const GravityModifier FallingSpeedModifier = 1.8;
         //The hitbox of a player will be created from 2 objects a Circle and a square
         //The head will interact with either a ceiling or other flying objects 
         //The body will interact with the ground, slopes or any other part

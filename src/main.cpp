@@ -19,7 +19,7 @@ void call_back(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if(key == GLFW_KEY_W && action == GLFW_PRESS)
     {
-        
+        player.UpdateJump();
     }
 }
 
@@ -48,6 +48,7 @@ class Game{
 
                 for(auto& ground:Ground)
                 {
+
                     player.CheckCollisionY(ground);
                     ground.render();
                 }
@@ -55,7 +56,6 @@ class Game{
                 std::chrono::duration<double> RawDeltaTime = CurrentTime-LastTime;
                 double DeltaTime = RawDeltaTime.count(); 
                 player.UpdatePositions(DeltaTime);
-
                 glfwSwapBuffers(window);
                 glfwPollEvents();
             

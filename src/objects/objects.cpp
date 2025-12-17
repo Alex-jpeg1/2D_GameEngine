@@ -44,8 +44,10 @@ HitBox::Square::Square(long double _CenterX, long double _CenterY, long double _
                                                                                                                                      _CenterY,
                                                                                                                                       _Height,
                                                                                                                                        _Width}
+{}
+void HitBox::Square::render() const 
 {
-
+    glBegin(GL_TRIANGLES);
     long double HalfHeight = Height/2;
     long double HalfWidth = Width/2;
 

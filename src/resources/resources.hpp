@@ -19,4 +19,10 @@ using XSpeed = long double;
 
 
 using DeltaTimeType = long double;
+
+using GravityModifier = long double;
+
+using WalkingSpeed = long double;
+
+using WalkingValue = long double;
 //Default macros for the center width height and radius 
