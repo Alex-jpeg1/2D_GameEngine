@@ -51,7 +51,7 @@ class Game{
                 player.Render();
                 std::chrono::duration<double> RawDeltaTime = CurrentTime-LastTime;
                 double DeltaTime = RawDeltaTime.count(); 
-                player.UpdatePositions(window,DeltaTime);
+                player.UpdatePositions(DeltaTime);
 
                 glfwSwapBuffers(window);
                 glfwPollEvents();
@@ -64,7 +64,7 @@ class Game{
                     
                     std::this_thread::sleep_for(SleepTime);
                 }
-                
+
                 LastTime = CurrentTime;
             }
             //The main loop

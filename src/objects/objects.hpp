@@ -30,8 +30,19 @@ namespace BasicObject
             BasicObject(long double _CenterX, long double _CenterY);
             virtual void UpdateCenter(long double _UpdateX, long double _UpdateY);
             virtual void OverWriteCenter(long double _UpdateX, long double _UpdateY);
+            virtual long double ReturnPositionY() const ;
+            virtual long double ReturnHeight() const ;
+            virtual long double ReturnTop() const ;
+            virtual long double ReturnPositionX() const ;
+            virtual long double ReturnWidth() const ;
+            virtual long double ReturnLeft() const ;
+            virtual long double ReturnRight() const ;
+            virtual long double ReturnBottom() const;
+        
         protected:
             long double CenterX,CenterY;
+            long double Height,Width;
+
     };
     //The basic object will check for collisions with every other object
     //The basic object will check for the relative position of the surrounding objects
@@ -45,7 +56,8 @@ class HalfCircle: public BasicObject::BasicObject
     public:
         HalfCircle();
         HalfCircle(long double _CenterX, long double _CenterY, long double _radius, int _NumberVertices);
-        void render() const;
+        void render() const;        
+
         //template <class CollisionObject>
         //CollisionStates CheckCollision(CollisionObject& object);
 
@@ -59,20 +71,11 @@ class Square: public BasicObject::BasicObject
         Square();
         Square(long double _CenterX, long double _CenterY, long double _Height, long double _Width);
         void render() const;
-        long double ReturnPositionY() const ;
-        long double ReturnHeight() const ;
-        long double ReturnTop() const ;
-        long double ReturnPositionX() const ;
-        long double ReturnWidth() const ;
-        long double ReturnLeft() const ;
-        long double ReturnRight() const ;
-        long double ReturnBottom() const;
 
         //template<class CollisionObject>
         //CollisionStates CheckCollision(CollisionObject& Object);
 
     protected:
-        long double Height,Width;
 };
 };
 
@@ -113,7 +116,8 @@ namespace Player
                         if(abs(bodyPart.ReturnBottom() - Object.ReturnTop()) < OFFSET)
                         {
                             isGrounded = true;
-
+                            bodyPart.OverWriteCenter(bodyPart.ReturnPositionX(), Object.ReturnTop() + bodyPart.ReturnLeft() / 2);
+                            headPart.OverWriteCenter(headPart.ReturnPositionX(), long double UpdateY)
                         }
                     }
                 }
@@ -138,50 +142,10 @@ namespace Player
     class Player:public Character
     {
         public:
+
             Player();
-            void UpdatePositions(GLFWwindow* window, long double DeltaTime)
-            {
-                if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-                {
-                    headPart.UpdateCenter(velocity * DeltaTime, 0);
-                    bodyPart.UpdateCenter(velocity * DeltaTime, 0);
-                    //Update the X position of the objects 
-                }
+            void UpdatePositions(long double DeltaTime);
 
-                if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-                {
-                    headPart.UpdateCenter(-velocity * DeltaTime, 0);
-                    bodyPart.UpdateCenter(-velocity * DeltaTime, 0);
-                    //Update the X position of the objects 
-                }
-
-                if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS && isGrounded)
-                {
-                    FallingSpeed = abs(FallingSpeed);
-                    isGrounded = false;
-                    MaximumHeightTouched = bodyPart.ReturnPositionY() + maxHeightJump;
-                    isInJump = true;
-                    hasGround = false;
-                }
-                if(!isGrounded)
-                {
-                    bodyPart.UpdateCenter(0, FallingSpeed * DeltaTime);
-                    headPart.UpdateCenter(0, FallingSpeed * DeltaTime);
-
-                    if(isInJump && bodyPart.ReturnPositionY() >= MaximumHeightTouched)
-                    {
-                        long long maxHitScaled = (long long)(MaximumHeightTouched * SCALING_FACTOR);
-                        long long bodyYScaled = (long long)(bodyPart.ReturnPositionY() * SCALING_FACTOR);
-
-                        long double correction = (long double)(maxHitScaled - bodyYScaled ) / SCALING_FACTOR;
-
-                        headPart.UpdateCenter(0, correction );
-                        bodyPart.UpdateCenter(0, correction );
-                        FallingSpeed = -abs(FallingSpeed);
-                        isInJump = false;
-                    }
-                }
-            }
         private:
             
             long double CalculateDistance(const long double& First, const long double& Second);
