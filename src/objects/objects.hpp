@@ -107,7 +107,7 @@ namespace Player
     {
         public:
             template<class ColisionObject> 
-            void CheckCollisionYDown(ColisionObject& Object)
+            EmptyReturn CheckCollisionYDown(ColisionObject& Object)
             {
                 if constexpr (std::is_same_v<ColisionObject, Surrounding::Ground>)
                 {
@@ -123,11 +123,11 @@ namespace Player
                 }
             }
             template<typename CollisionObject>
-            CollisionStates CheckCollisionXRight(CollisionObject& Object)
+            EmptyReturn CheckCollisionXRight(CollisionObject& Object)
             {
                 if constexpr (std::is_same_v<CollisionObject, Surrounding::Ground>)
                 {
-                    if(bodyPart.ReturnBottom() < Object.ReturnTop() && bodyPart.ReturnTop() > Object.ReturnBottom)
+                    if(bodyPart.ReturnBottom() < Object.ReturnTop() && bodyPart.ReturnTop() > Object.ReturnBottom())
                     {
                         if(abs(bodyPart.ReturnRight() - Object.ReturnLeft()) < OFFSET || bodyPart.ReturnRight() < Object.ReturnTop())
                         {
@@ -163,6 +163,7 @@ namespace Player
             EmptyReturn UpdateJump();
 
             Grounded OnGround();
+            EmptyReturn UpdateDx(double);
         private:
             
             Distance CalculateDistance(const long double& First, const long double& Second);

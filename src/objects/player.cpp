@@ -55,9 +55,15 @@ EmptyReturn Player::Player::UpdatePositions(DeltaTimeType DeltaTime)
     headPart.UpdateCenter( dx ,  FallingSpeed * DeltaTime);
     bodyPart.UpdateCenter( dx ,  FallingSpeed * DeltaTime);
 
+    dx = 0; //after the update it won't move anymore 
+    
     if(isInJump)
     {
         CheckMaxHeight();
     }
 }
 
+EmptyReturn Player::Player::UpdateDx(double DeltaTime)
+{
+    dx = velocity * DeltaTime;
+}

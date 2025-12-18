@@ -28,7 +28,7 @@ class Game{
             Surrounding::Ground obj(0.0, -0.9, 0.2, 0.5, 0);
             Surrounding::Ground obj1(0.6, -0.7, 0.2, 0.5, 1);
             Ground.emplace_back(obj);
-            //Ground.emplace_back(obj1);
+            Ground.emplace_back(obj1);
         }
         void Update()
         {
@@ -47,18 +47,19 @@ class Game{
 
                 for(auto& ground:Ground)
                 {
-
+                    player.CheckCollisionXRight(ground);
                     player.CheckCollisionYDown(ground);
                     ground.render();
 
                 }
                 TimePoint LastGoodTime = std::chrono::high_resolution_clock::now();
-                HandleInput(player, LastGoodTime);
                 player.Render();
 
                 std::chrono::duration<double> RawDeltaTime = CurrentTime-LastTime;
-
+                
                 double DeltaTime = RawDeltaTime.count(); 
+                
+                HandleInput(player, LastGoodTime, DeltaTime);
                 
                 player.UpdatePositions(DeltaTime);
                 
@@ -90,9 +91,9 @@ class Game{
 int main() 
 {
     Game game;
-    std::thread t1(&Game::Game::ResourceFetch, &game); 
+    //std::thread t1(&Game::Game::ResourceFetch, &game); 
     game.Update();
-    t1.join();
+    //t1.join();
     //std::cout<<std::fixed<<std::setprecision(100)<<contor;
     return 0;
 }

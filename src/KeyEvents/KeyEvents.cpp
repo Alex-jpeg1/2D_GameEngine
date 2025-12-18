@@ -14,30 +14,21 @@ bool ValidateInput(const TimePoint& myTimePoint,const TimePoint& MaximumTimePoin
     return myTimePoint < MaximumTimePoint;
 }
 //This validates the number of inputs at a given time to not block the main thread in case of multiple inputs
-EmptyReturn HandleInput(Player::Player& player, const TimePoint& MaximumTimePoint)
+EmptyReturn HandleInput(Player::Player& player, const TimePoint& MaximumTimePoint, DeltaTimeType DeltaTime)
 {
-    while(!UnhandledInputs.empty() && ValidateInput(UnhandledInputs.front().inputTime, MaximumTimePoint))
+    while(!UnhandledInputs.empty())
     {
         KeyEvent current = UnhandledInputs.front();
         UnhandledInputs.pop();
         int key = current.key;
         int action = current.action;
-        switch (key) 
+        if(key == GLFW_KEY_W && (action == GLFW_PRESS || action == GLFW_REPEAT))
         {
-            case GLFW_KEY_W:
-            {
-                if(action == GLFW_PRESS || action == GLFW_REPEAT)
-                {
-                       player.UpdateJump();
-                }
-            }
-            case GLFW_KEY_D:
-            {
-                if(action == GLFW_PRESS || action == GLFW_REPEAT)
-                {
-                    
-                }
-            }
+            player.UpdateJump();
+        }
+        if(key == GLFW_KEY_D && (action == GLFW_PRESS || action == GLFW_REPEAT))
+        {
+            player.UpdateDx(DeltaTime);
         }
     }
 }
