@@ -14,12 +14,11 @@ std::queue<KeyEvent> UnhandledInputs;
 long double contor = 0; //debug tool
 //These will be the main components for hitboxes
 
-Player::Player player; //global to call it from the call_back
 
 void call_back(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-
-    UnhandledInputs.emplace(KeyEvent(key,scancode,action,mods));
+    TimePoint inputTime = std::chrono::high_resolution_clock::now();
+    UnhandledInputs.emplace(KeyEvent(key,scancode,action,mods, inputTime));
 }
 
 class Game{
@@ -51,23 +50,28 @@ class Game{
 
                     player.CheckCollisionY(ground);
                     ground.render();
+
                 }
+                HandleInput(player);
                 player.Render();
+
                 std::chrono::duration<double> RawDeltaTime = CurrentTime-LastTime;
+
                 double DeltaTime = RawDeltaTime.count(); 
+                
                 player.UpdatePositions(DeltaTime);
+                
                 glfwSwapBuffers(window);
                 glfwPollEvents();
             
                 auto EndTime = std::chrono::high_resolution_clock::now();
                 auto DurationTime = EndTime - CurrentTime;
+
                 if(TargetFrameRate > DurationTime)
                 {
                     auto SleepTime = TargetFrameRate - DurationTime;
-                    
                     std::this_thread::sleep_for(SleepTime);
                 }
-
                 LastTime = CurrentTime;
             }
             //The main loop
@@ -79,6 +83,7 @@ class Game{
 
         }
     private:
+        Player::Player player;
         std::vector<Surrounding::Ground> Ground;
 };
 int main() 

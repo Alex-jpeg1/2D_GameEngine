@@ -22,9 +22,12 @@ Grounded Player::Player::OnGround()
 
 EmptyReturn Player::Player::UpdateJump()
 {
-    FallingSpeed = abs(FallingSpeed);
-    isGrounded = false;
-    isInJump = true;
+    if(isGrounded)
+    {
+        FallingSpeed = abs(FallingSpeed);
+        isGrounded = false;
+        isInJump = true;
+    }
 }
 
 EmptyReturn Player::Player::UpdateHeightToTouch()
