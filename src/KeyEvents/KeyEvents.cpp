@@ -8,10 +8,15 @@ KeyEvent::KeyEvent(const int& _key, const int& _scancode, const int& _action, co
                                                                                                                              action(_action),
                                                                                                                              mods(_mods),
                                                                                                                              inputTime(_inputTime){}
-                                                                                           
-void HandleInput(Player::Player& player)
+
+bool ValidateInput(const TimePoint& myTimePoint,const TimePoint& MaximumTimePoint)
 {
-    while(!UnhandledInputs.empty())
+    return myTimePoint < MaximumTimePoint;
+}
+//This validates the number of inputs at a given time to not block the main thread in case of multiple inputs
+EmptyReturn HandleInput(Player::Player& player, const TimePoint& MaximumTimePoint)
+{
+    while(!UnhandledInputs.empty() && ValidateInput(UnhandledInputs.front().inputTime, MaximumTimePoint))
     {
         KeyEvent current = UnhandledInputs.front();
         UnhandledInputs.pop();

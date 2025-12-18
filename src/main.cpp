@@ -2,10 +2,10 @@
 #include <GL/gl.h>
 #include <GLFW/glfw3.h>
 #include <chrono>
-#include <iomanip>
+//#include <iomanip>
 #include <thread>
 #include <vector>
-#include <iostream>
+//#include <iostream>
 #include "KeyEvents/KeyEvents.hpp"
 
 constexpr std::chrono::duration<double> TargetFrameRate = std::chrono::duration<double>(1.0/100.0);
@@ -52,7 +52,8 @@ class Game{
                     ground.render();
 
                 }
-                HandleInput(player);
+                TimePoint LastGoodTime = std::chrono::high_resolution_clock::now();
+                HandleInput(player, LastGoodTime);
                 player.Render();
 
                 std::chrono::duration<double> RawDeltaTime = CurrentTime-LastTime;
@@ -92,7 +93,7 @@ int main()
     std::thread t1(&Game::Game::ResourceFetch, &game); 
     game.Update();
     t1.join();
-    std::cout<<std::fixed<<std::setprecision(100)<<contor;
+    //std::cout<<std::fixed<<std::setprecision(100)<<contor;
     return 0;
 }
 //The Update Function will play in the main thread to draw in there

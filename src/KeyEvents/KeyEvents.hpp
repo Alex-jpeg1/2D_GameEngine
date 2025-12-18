@@ -14,4 +14,4 @@ struct KeyEvent
 
 extern std::queue<KeyEvent> UnhandledInputs;
 
-void HandleInput(Player::Player& player);
+EmptyReturn HandleInput(Player::Player& player, const TimePoint& MaximumTimePoint);
