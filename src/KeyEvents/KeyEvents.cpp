@@ -31,6 +31,13 @@ EmptyReturn HandleInput(Player::Player& player, const TimePoint& MaximumTimePoin
                        player.UpdateJump();
                 }
             }
+            case GLFW_KEY_D:
+            {
+                if(action == GLFW_PRESS || action == GLFW_REPEAT)
+                {
+                    
+                }
+            }
         }
     }
 }

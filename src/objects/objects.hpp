@@ -107,7 +107,7 @@ namespace Player
     {
         public:
             template<class ColisionObject> 
-            void CheckCollisionY(ColisionObject& Object)
+            void CheckCollisionYDown(ColisionObject& Object)
             {
                 if constexpr (std::is_same_v<ColisionObject, Surrounding::Ground>)
                 {
@@ -123,9 +123,19 @@ namespace Player
                 }
             }
             template<typename CollisionObject>
-            CollisionStates CheckCollisionX(CollisionObject& Object)
+            CollisionStates CheckCollisionXRight(CollisionObject& Object)
             {
-
+                if constexpr (std::is_same_v<CollisionObject, Surrounding::Ground>)
+                {
+                    if(bodyPart.ReturnBottom() < Object.ReturnTop() && bodyPart.ReturnTop() > Object.ReturnBottom)
+                    {
+                        if(abs(bodyPart.ReturnRight() - Object.ReturnLeft()) < OFFSET || bodyPart.ReturnRight() < Object.ReturnTop())
+                        {
+                            bodyPart.OverWriteCenter(Object.ReturnLeft() - bodyPart.ReturnWidth() / 2 - OFFSET, bodyPart.ReturnPositionY());
+                            headPart.OverWriteCenter(Object.ReturnLeft() - bodyPart.ReturnWidth() / 2 - OFFSET, headPart.ReturnPositionY());
+                        }
+                    }
+                }
             }
 
             virtual EmptyReturn UpdatePositions(DeltaTimeType DeltaTime) = 0;

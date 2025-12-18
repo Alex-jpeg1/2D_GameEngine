@@ -48,7 +48,7 @@ class Game{
                 for(auto& ground:Ground)
                 {
 
-                    player.CheckCollisionY(ground);
+                    player.CheckCollisionYDown(ground);
                     ground.render();
 
                 }
