@@ -11,18 +11,20 @@ using Distance = long double;
 using FeetPosition = long double;
 using MaxJump = long double;
 using MaxHeight = long double;
-
-using Grounded = bool;
+using CenterYPosition = long double;
+using CenterXPosition = long double;
 
 using YSpeed = long double;
 using XSpeed = long double;
 
 
 using DeltaTimeType = long double;
-
 using GravityModifier = long double;
-
 using WalkingSpeed = long double;
-
 using WalkingValue = long double;
+using GravityApllication = long double;
+
+
+using Grounded = bool;
+using EmptyReturn = void;
 //Default macros for the center width height and radius 

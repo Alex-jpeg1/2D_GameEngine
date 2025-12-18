@@ -1,5 +1,6 @@
 #include "objects.hpp"
 #include "../resources/resources.hpp"
+#include<iostream>
 
 long double Player::Player::CalculateFeet()
 {
@@ -8,21 +9,52 @@ long double Player::Player::CalculateFeet()
 
 Player::Character::Character():headPart{DEFAULT_CENTERX, DEFAULT_CENTERY + DEVIATION, DEFAULT_RADIUS, 50},
                                bodyPart{DEFAULT_CENTERX,DEFAULT_CENTERY,DEFAULT_HEIGHT,DEFAULT_WIDTH}{}
-void Player::Player::Render()
+EmptyReturn Player::Player::Render()
 {
     bodyPart.render();
     headPart.render();
 }
 
-void Player::Player::UpdateJump()
+Grounded Player::Player::OnGround()
 {
-    FallingSpeed = 0;
+    return isGrounded;
+}
+
+EmptyReturn Player::Player::UpdateJump()
+{
+    FallingSpeed = abs(FallingSpeed);
     isGrounded = false;
     isInJump = true;
 }
 
-void Player::Player::UpdatePositions(DeltaTimeType DeltaTime)
+EmptyReturn Player::Player::UpdateHeightToTouch()
 {
-    headPart.UpdateCenter(headPart.ReturnPositionX() + dx * DeltaTime, headPart.ReturnPositionY() + FallingSpeed * DeltaTime);
-    bodyPart.UpdateCenter(bodyPart.ReturnPositionX() + dx * DeltaTime, bodyPart.ReturnPositionY() + FallingSpeed * DeltaTime);
+    MaximumHeightToTouch = bodyPart.ReturnPositionY() + maxHeightJump;
 }
+EmptyReturn Player::Player::CheckMaxHeight()
+{
+    auto LowerThanSecond = [](CenterYPosition Player, CenterYPosition MaxHeight)
+                                {
+                                    return MaxHeight > Player;
+                                };
+
+    if(!LowerThanSecond(bodyPart.ReturnPositionY(), MaximumHeightToTouch))
+    {
+        bodyPart.OverWriteCenter(bodyPart.ReturnPositionX(), MaximumHeightToTouch + OFFSET);
+        headPart.OverWriteCenter(headPart.ReturnPositionX(), MaximumHeightToTouch + bodyPart.ReturnHeight()/2 + OFFSET);
+        isInJump = false;
+        FallingSpeed = -abs(FallingSpeed);
+    }
+}
+
+EmptyReturn Player::Player::UpdatePositions(DeltaTimeType DeltaTime)
+{
+    headPart.UpdateCenter( dx ,  FallingSpeed * DeltaTime);
+    bodyPart.UpdateCenter( dx ,  FallingSpeed * DeltaTime);
+
+    if(isInJump)
+    {
+        CheckMaxHeight();
+    }
+}
+

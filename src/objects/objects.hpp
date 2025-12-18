@@ -6,10 +6,9 @@
 #include <cmath> 
 #include "../resources/resources.hpp"
 
-#define OFFSET 0.0001
+constexpr double OFFSET = 0.0001;
 
 constexpr long double PI = 3.14159;
-constexpr long long SCALING_FACTOR = 100000000000LL; 
 extern long double contor;
 
 
@@ -116,12 +115,9 @@ namespace Player
                     {
                         if(abs(bodyPart.ReturnBottom() - Object.ReturnTop()) < OFFSET || bodyPart.ReturnBottom() < Object.ReturnTop())
                         {
-
                             isGrounded = true;
                             bodyPart.OverWriteCenter(bodyPart.ReturnPositionX(), Object.ReturnTop() + bodyPart.ReturnHeight() / 2 + OFFSET );
                             headPart.OverWriteCenter(headPart.ReturnPositionX(), Object.ReturnTop() + bodyPart.ReturnHeight() + OFFSET);
-                            if(contor == 0)
-                                contor = bodyPart.ReturnBottom();
                         }
                     }
                 }
@@ -132,9 +128,9 @@ namespace Player
 
             }
 
-            virtual void UpdatePositions(DeltaTimeType DeltaTime) = 0;
+            virtual EmptyReturn UpdatePositions(DeltaTimeType DeltaTime) = 0;
             Character();
-            virtual void Render() = 0;
+            virtual EmptyReturn Render() = 0;
         protected:
             HitBox::HalfCircle headPart;
             HitBox::Square bodyPart;
@@ -145,27 +141,29 @@ namespace Player
 
             Grounded isGrounded=false;
     };
-
-
     class Player:public Character
     {
         public:
 
             //Player();
-            virtual void UpdatePositions(DeltaTimeType DelaTime);
-            virtual void Render();
+            virtual EmptyReturn UpdatePositions(DeltaTimeType DelaTime);
+            virtual EmptyReturn Render();
+            virtual EmptyReturn CheckMaxHeight();
+            EmptyReturn UpdateHeightToTouch();
+            EmptyReturn UpdateJump();
 
-            void UpdateJump();
+            Grounded OnGround();
         private:
             
             Distance CalculateDistance(const long double& First, const long double& Second);
             FeetPosition CalculateFeet();
 
             MaxJump maxHeightJump = 0.4;
-            MaxHeight MaximumHeightTouched = 0; 
+            MaxHeight MaximumHeightToTouch = 0; 
             WalkingValue dx = 0;
+            GravityApllication dy = 0;
 
-            const GravityModifier FallingSpeedModifier = 1.8;
+            const GravityModifier FallingSpeedModifier = 1;
         //The hitbox of a player will be created from 2 objects a Circle and a square
         //The head will interact with either a ceiling or other flying objects 
         //The body will interact with the ground, slopes or any other part

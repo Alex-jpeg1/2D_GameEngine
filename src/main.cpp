@@ -5,8 +5,8 @@
 #include <iomanip>
 #include <thread>
 #include "objects/objects.hpp"
-#include<vector>
-#include<iostream>
+#include <vector>
+#include <iostream>
 constexpr std::chrono::duration<double> TargetFrameRate = std::chrono::duration<double>(1.0/100.0);
 
 
@@ -19,7 +19,12 @@ void call_back(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if(key == GLFW_KEY_W && action == GLFW_PRESS)
     {
-        player.UpdateJump();
+        if(player.OnGround())
+        {
+            player.UpdateJump();
+            player.UpdateHeightToTouch();
+        }
+
     }
 }
 
@@ -41,6 +46,7 @@ class Game{
             glfwSetKeyCallback(window, call_back);
             glewInit();
             static auto LastTime = std::chrono::high_resolution_clock::now();
+
             while (!glfwWindowShouldClose(window)) 
             {
                 auto CurrentTime = std::chrono::high_resolution_clock::now();

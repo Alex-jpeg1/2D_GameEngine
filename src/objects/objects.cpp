@@ -19,7 +19,7 @@ void BasicObject::BasicObject::UpdateCenter(long double _UpdateX, long double _U
 void BasicObject::BasicObject::OverWriteCenter(long double _UpdateX, long double _UpdateY)
 {
     CenterX = _UpdateX;
-    CenterY = _UpdateY;
+    CenterY = _UpdateY; 
 }
 
 HitBox::HalfCircle::HalfCircle(long double _CenterX, long double _CenterY, long double _radius, int _NumberVertices): 
