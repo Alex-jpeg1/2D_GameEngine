@@ -4,11 +4,12 @@
 #include <chrono>
 #include <iomanip>
 #include <thread>
-#include "objects/objects.hpp"
 #include <vector>
 #include <iostream>
-constexpr std::chrono::duration<double> TargetFrameRate = std::chrono::duration<double>(1.0/100.0);
+#include "KeyEvents/KeyEvents.hpp"
 
+constexpr std::chrono::duration<double> TargetFrameRate = std::chrono::duration<double>(1.0/100.0);
+std::queue<KeyEvent> UnhandledInputs;
 
 long double contor = 0; //debug tool
 //These will be the main components for hitboxes
@@ -17,15 +18,8 @@ Player::Player player; //global to call it from the call_back
 
 void call_back(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    if(key == GLFW_KEY_W && action == GLFW_PRESS)
-    {
-        if(player.OnGround())
-        {
-            player.UpdateJump();
-            player.UpdateHeightToTouch();
-        }
 
-    }
+    UnhandledInputs.emplace(KeyEvent(key,scancode,action,mods));
 }
 
 class Game{
@@ -89,7 +83,6 @@ class Game{
 };
 int main() 
 {
-
     Game game;
     std::thread t1(&Game::Game::ResourceFetch, &game); 
     game.Update();
