@@ -30,5 +30,6 @@ EmptyReturn HandleInput(Player::Player& player, const TimePoint& MaximumTimePoin
         {
             player.UpdateDx(DeltaTime);
         }
+        player.UpdatePositions(DeltaTime);
     }
 }

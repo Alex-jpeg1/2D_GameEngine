@@ -20,7 +20,23 @@ enum class CollisionStates
     FeetCollision
 };
 
+namespace Vector2D
+{
+    class vect2d
+    {
+    public:
+        vect2d();
+        vect2d(XPosition _Xposition,YPosition _YPosition);
 
+        XPosition GetXPos() {return Xposition; }
+        YPosition GetYPos() {return Yposition; }
+    private:
+        
+        XPosition Xposition;
+        YPosition Yposition;
+
+    };
+}
 namespace BasicObject
 {
     class BasicObject
@@ -129,7 +145,7 @@ namespace Player
                 {
                     if(bodyPart.ReturnBottom() < Object.ReturnTop() && bodyPart.ReturnTop() > Object.ReturnBottom())
                     {
-                        if(abs(bodyPart.ReturnRight() - Object.ReturnLeft()) < OFFSET || bodyPart.ReturnRight() < Object.ReturnTop())
+                        if(abs(bodyPart.ReturnRight() - Object.ReturnLeft()) < OFFSET || bodyPart.ReturnRight() > Object.ReturnLeft())
                         {
                             bodyPart.OverWriteCenter(Object.ReturnLeft() - bodyPart.ReturnWidth() / 2 - OFFSET, bodyPart.ReturnPositionY());
                             headPart.OverWriteCenter(Object.ReturnLeft() - bodyPart.ReturnWidth() / 2 - OFFSET, headPart.ReturnPositionY());

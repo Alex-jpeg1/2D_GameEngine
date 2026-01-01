@@ -27,4 +27,7 @@ using GravityApllication = long double;
 
 using Grounded = bool;
 using EmptyReturn = void;
+
+using XPosition = long double;
+using YPosition = long double;
 //Default macros for the center width height and radius 
