@@ -1,10 +1,7 @@
 #pragma once
 
 #include "../../glad/glad.h"
-#include "GLFW/glfw3.h"
-#include <fstream>
-#include <sstream>
-#include <iostream>
+
 #include <cerrno>
 #include <string>
 #include "../resources/resources.hpp"
@@ -34,6 +31,6 @@ class Shader
 
     private:
 
-    
+
     GLuint _ID;
 };

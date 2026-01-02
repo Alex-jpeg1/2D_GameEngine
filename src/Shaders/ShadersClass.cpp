@@ -1,4 +1,6 @@
 #include "ShadersClass.hpp"
+#include <fstream>
+#include <iostream>
 #include <cerrno>
 
 
@@ -27,18 +29,41 @@
 
 Shader::Shader(const std::string& vertexFile, const std::string& fragmentFile)
 {
-    std::string vertexCode = GetFileContent(vertexFile);
-    std::string fragmentCode = GetFileContent(fragmentFile);
+    const std::string vertexCode = GetFileContent(vertexFile);
+    const std::string fragmentCode = GetFileContent(fragmentFile);
 
-    
+    const char * vertexSource = vertexCode.c_str();
+    const char * fragmentSource = fragmentCode.c_str();
+
+    //Creating the vertexShader
+    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+
+    glShaderSource(vertexShader, 1, &vertexSource, NULL);
+    glCompileShader(vertexShader);
+
+    //Creating the fragment Shader
+    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+
+    glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
+    glCompileShader(fragmentShader);
+
+    _ID = glCreateProgram();
+
+    glAttachShader(_ID, vertexShader);
+    glAttachShader(_ID, fragmentShader);
+
+    glLinkProgram(_ID);
+
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
 }
 
 EmptyReturn Shader::Activate()
 {
-
+    glUseProgram(_ID);
 }
 
 EmptyReturn Shader::Delete()
 {
-
+    glDeleteProgram(_ID);
 }
