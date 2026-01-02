@@ -33,4 +33,10 @@ using YValue = long double;
 using Height = long double;
 using Width = long double;
 using Size = long double;
+
+using WindowHeight = int;
+using WindowWidth = int;
+using Error = int;
+constexpr WindowHeight CUSTOM_DefaultHeight = 800;
+constexpr WindowWidth CUSTOM_DefaultWidth = 800;
 //Default macros for the center width height and radius 
