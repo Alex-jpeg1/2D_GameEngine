@@ -1,5 +1,4 @@
 #pragma once
-
 constexpr double DEFAULT_RADIUS = 0.05;
 constexpr double DEFAULT_CENTERX = 0;
 constexpr double DEFAULT_CENTERY = 0;
@@ -28,8 +27,10 @@ using GravityApllication = long double;
 using Grounded = bool;
 using EmptyReturn = void;
 
-using XPosition = long double;
-using YPosition = long double;
+using XValue = long double;
+using YValue = long double;
 
+using Height = long double;
+using Width = long double;
 using Size = long double;
 //Default macros for the center width height and radius 
