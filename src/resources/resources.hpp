@@ -30,4 +30,6 @@ using EmptyReturn = void;
 
 using XPosition = long double;
 using YPosition = long double;
+
+using Size = long double;
 //Default macros for the center width height and radius 
