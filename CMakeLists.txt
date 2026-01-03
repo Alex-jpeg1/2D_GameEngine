@@ -13,6 +13,10 @@ add_executable(MyApp
     src/objects/Player.cpp 
     src/KeyEvents/KeyEvents.cpp 
     src/objects/Vector2D.cpp 
+    src/Shaders/ShadersClass.cpp
+    src/EBO/EBO.cpp
+    src/VAO/VAO.cpp
+    src/VBO/VBO.cpp
     gladsrc/glad.c
 )
 
