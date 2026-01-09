@@ -5,10 +5,12 @@ pkgs.mkShell {
     gcc
     cmake
     pkg-config
-    
-    python311Packages.glad 
 
+    python311Packages.glad 
     glfw
+    glew
+    glm 
+    
     xorg.libX11      
     xorg.libXi       
     xorg.libXrandr   
@@ -17,7 +19,6 @@ pkgs.mkShell {
     xorg.libXinerama
     libGL
   ];
-
   LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath (with pkgs; [
     libGL
     glfw
@@ -25,6 +26,7 @@ pkgs.mkShell {
   ]);
 
   shellHook = ''
+    echo "Mediul de dezvoltare OpenGL/C++ a fost incarcat."
     echo "   glad --generator=c --spec=gl --profile=core --out-path=./glad"
   '';
 }

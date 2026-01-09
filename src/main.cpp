@@ -10,6 +10,8 @@
 #include <math.h>
 #include <vector>
 #include "Shaders/ShadersClass.hpp"
+#include "objects/objects.hpp"
+#include <glm/gtc/matrix_transform.hpp>
 
 std::vector<GLfloat> vertices =
 {
@@ -45,7 +47,7 @@ enum class WC_Messages
 WC_Messages CreateWindow(GLFWwindow ** window, const WindowHeight& windowHeight = CUSTOM_DefaultHeight, const WindowWidth& windowWidth = CUSTOM_DefaultWidth)
 {
     *window = glfwCreateWindow(CUSTOM_DefaultWidth, CUSTOM_DefaultHeight, "Game", NULL, NULL);
-
+    glm::mat4 projection = glm::ortho(0.0f, 1280.0f, 0.0f, 720.0f, -1.0f, 1.0f);
     if(*window == NULL)
     {
         return WC_Messages::WC_Fail;
@@ -84,9 +86,12 @@ EmptyReturn Update()
         }
     }
 
-    Shader shaderProgram("Shaders/ShadersInfo/default.vert", "Shaders/ShadersInfo/default.frag");
-
+    
     CreateContext(&window);
+    
+    Shader shaderProgram("../src/Shaders/ShadersInfo/default.vert", "../src/Shaders/ShadersInfo/default.frag");
+
+    Objects::Rectangle(0,0,30,30,1);
 
     VAO _VAO;
     _VAO.Bind();
@@ -108,11 +113,16 @@ EmptyReturn Update()
 
         _VAO.Bind();
 		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
-        
+
         glfwSwapBuffers(window);
 
         glfwPollEvents();
     }
+    
+    _VAO.Delete();
+	_VBO.Delete();
+	_EBO.Delete();
+	shaderProgram.Delete();
     glfwDestroyWindow(window);
     glfwTerminate();
 }

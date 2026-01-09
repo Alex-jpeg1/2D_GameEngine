@@ -13,6 +13,8 @@ namespace Vector2DCustom
         [[ nodiscard ]] XValue GetXVal() const { return _X; }
         [[ nodiscard ]] YValue GetYVal() const { return _Y; }
 
+        [[ nodiscard ]] Width GetWidth() const { return GetXVal(); }
+        [[ nodiscard ]] Height GetHeight() const { return GetYVal(); }
         EmptyReturn UpdateX(const Size& val);
         EmptyReturn UpdateY(const Size& val);
 

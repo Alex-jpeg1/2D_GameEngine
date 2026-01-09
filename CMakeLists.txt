@@ -1,6 +1,14 @@
 cmake_minimum_required(VERSION 3.10)
 project(MyOpenGLGame)
 
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Debug)
+endif()
+
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -Wall")
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GLFW REQUIRED glfw3)
 find_package(OpenGL REQUIRED)
@@ -33,5 +41,3 @@ target_link_libraries(MyApp PRIVATE
     Xrandr Xi Xinerama Xcursor 
     dl                        
 )
-
-target_compile_features(MyApp PRIVATE cxx_std_17)

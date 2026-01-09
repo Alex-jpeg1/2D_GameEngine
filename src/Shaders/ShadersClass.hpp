@@ -8,6 +8,25 @@
 
 std::string GetFileContent(const std::string& file);    
 
+namespace GetShaderType
+{
+    class AllocateShaders
+    {
+        public:
+
+        private:
+        enum class TileType
+        {
+            _Air,
+            _UngrassedGround,
+            _GrassedGround,
+            _Stone,
+            _Leaf,
+            _TreeStem,
+        };
+    };
+}
+
 class Shader
 {
     public:
@@ -26,11 +45,10 @@ class Shader
     Shader(Shader&& other) = default;
     Shader& operator=(Shader&& other) = default;
 
-    ~Shader() { Delete(); }
+    ~Shader() = default;
     //rule of 5 applied
 
     private:
-
 
     GLuint _ID;
 };

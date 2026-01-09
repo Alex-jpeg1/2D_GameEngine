@@ -21,7 +21,6 @@
 
         in.read(&value[0], size);
         in.close();
-
         return value;
     }
     throw(errno);
