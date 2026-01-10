@@ -17,12 +17,13 @@ namespace GetShaderType
         private:
         enum class TileType
         {
-            _Air,
-            _UngrassedGround,
-            _GrassedGround,
-            _Stone,
-            _Leaf,
-            _TreeStem,
+            Air,
+            UngrassedGround,
+            GrassedGround,
+            Stone,
+            Leaf,
+            TreeStem,
+            Player,
         };
     };
 }
