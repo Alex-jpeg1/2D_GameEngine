@@ -1,8 +1,5 @@
 #pragma once
 #include "Vector2D.hpp"
-#include "../VAO/VAO.hpp"
-#include "../VBO/VBO.hpp"
-#include "../EBO/EBO.hpp"
 
 namespace Objects
 {
@@ -14,6 +11,8 @@ namespace Objects
         Positions GetPositions();
         private:
 
+        Positions GetNormalizedPositions(const Positions InitialValues);
+        GLfloat Normalize(const GLfloat& Value,const WindowSize& WindowValue);
         const ShaderType _ShaderType; 
         Vector2DCustom::vect2d _LeftDownCorner; 
         Vector2DCustom::vect2d _RectangleSizes; //Width in place of x and height in place of y

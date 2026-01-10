@@ -13,22 +13,10 @@
 #include "objects/objects.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
-std::vector<GLfloat> vertices =
-{
-	-0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, // Lower left corner
-	0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, // Lower right corner
-	0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f, // Upper corner
-	-0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, // Inner left
-	0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, // Inner right
-	0.0f, -0.5f * float(sqrt(3)) / 3, 0.0f // Inner down
-};
-
-// Indices for vertices order
 std::vector<GLuint> indices =
 {
-	0, 3, 5, // Lower left triangle
-	3, 2, 4, // Lower right triangle
-	5, 4, 1 // Upper triangle
+	0, 1, 2, 
+	2, 1, 3,
 };
 
 EmptyReturn UpdateHints()
@@ -47,7 +35,7 @@ enum class WC_Messages
 WC_Messages CreateWindow(GLFWwindow ** window, const WindowHeight& windowHeight = CUSTOM_DefaultHeight, const WindowWidth& windowWidth = CUSTOM_DefaultWidth)
 {
     *window = glfwCreateWindow(CUSTOM_DefaultWidth, CUSTOM_DefaultHeight, "Game", NULL, NULL);
-    glm::mat4 projection = glm::ortho(0.0f, 1280.0f, 0.0f, 720.0f, -1.0f, 1.0f);
+
     if(*window == NULL)
     {
         return WC_Messages::WC_Fail;
@@ -91,10 +79,12 @@ EmptyReturn Update()
     
     Shader shaderProgram("../src/Shaders/ShadersInfo/default.vert", "../src/Shaders/ShadersInfo/default.frag");
 
-    Objects::Rectangle(0,0,30,30,1);
+    Objects::Rectangle TestRectangle = Objects::Rectangle(100,100,100,100,1);
 
     VAO _VAO;
     _VAO.Bind();
+
+    std::vector<GLfloat> vertices = TestRectangle.GetPositions(); 
     VBO _VBO(vertices, vertices.size() * sizeof(GLfloat));
     EBO _EBO(indices, indices.size() * sizeof(GLuint));
 
@@ -112,7 +102,7 @@ EmptyReturn Update()
         shaderProgram.Activate();
 
         _VAO.Bind();
-		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);
 

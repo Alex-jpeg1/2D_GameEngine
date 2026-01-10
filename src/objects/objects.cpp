@@ -1,4 +1,6 @@
 #include "objects.hpp"
+#include <GLFW/glfw3.h>
+#include <cstddef>
 
 Objects::Rectangle::Rectangle(const XValue& xVal, const YValue& yVal, const Height& height, const Width& width, const ShaderType& ShaderTypeValue)
     :_ShaderType{ShaderTypeValue},
@@ -17,6 +19,39 @@ Positions Objects::Rectangle::GetPositions()
     RightCornerX = LeftCornerX + _RectangleSizes.GetWidth();
     RightCornerY = LeftCornerY + _RectangleSizes.GetHeight();
 
-    return {LeftCornerX, LeftCornerY, RightCornerX, RightCornerY};
+    return GetNormalizedPositions({LeftCornerX,
+                                                  LeftCornerY, 
+                                                  RightCornerX,
+                                                  LeftCornerY, 
+                                                  LeftCornerX, 
+                                                  RightCornerY, 
+                                                  RightCornerX, 
+                                                  RightCornerY});
 }
 
+GLfloat Objects::Rectangle::Normalize(const GLfloat& Value, const WindowSize& WindowValue)
+{
+    GLfloat FinalValue = Value - static_cast<GLfloat>(WindowValue/2.0);
+    
+    FinalValue /= static_cast<GLfloat>(WindowValue/2.0);
+
+    return FinalValue;
+}
+
+Positions Objects::Rectangle::GetNormalizedPositions(const Positions InitialValues)
+{
+    Positions FinalValue;
+    for(std::size_t i=0; i < InitialValues.size(); i++)
+    {
+        GLfloat Val = InitialValues[i];
+        if(i % 2 == 0)
+        {
+            FinalValue.emplace_back(Normalize(Val, CUSTOM_DefaultWidth));
+        }
+        else 
+        {
+            FinalValue.emplace_back(Normalize(Val, CUSTOM_DefaultHeight));
+        }
+    }
+    return FinalValue;
+}

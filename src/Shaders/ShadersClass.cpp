@@ -2,7 +2,8 @@
 #include <fstream>
 #include <iostream>
 #include <cerrno>
-
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 [[ nodiscard ]]std::string GetFileContent(const std::string & file)
 {
@@ -39,7 +40,7 @@ Shader::Shader(const std::string& vertexFile, const std::string& fragmentFile)
 
     glShaderSource(vertexShader, 1, &vertexSource, NULL);
     glCompileShader(vertexShader);
-
+    
     //Creating the fragment Shader
     GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
@@ -53,6 +54,13 @@ Shader::Shader(const std::string& vertexFile, const std::string& fragmentFile)
 
     glLinkProgram(_ID);
 
+    glUseProgram(_ID);
+
+    glm::mat4 projection = glm::ortho(0.0f, CUSTOM_DefaultWidth * 1.0f, 0.0f, CUSTOM_DefaultHeight * 1.0f, -1.0f, 1.0f);
+
+    unsigned int projLoc = glGetUniformLocation(_ID, "projection");
+    glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+    
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 }

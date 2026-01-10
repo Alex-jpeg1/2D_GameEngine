@@ -1,5 +1,6 @@
 #pragma once
 #include<vector>
+#include "../../glad/glad.h"
 
 
 using Distance = float;
@@ -23,11 +24,11 @@ using GravityApllication = float;
 using Grounded = bool;
 using EmptyReturn = void;
 
-using XValue = int;
-using YValue = int;
+using XValue = GLfloat;
+using YValue = GLfloat;
 
-using Height = float;
-using Width = float;
+using Height = GLfloat;
+using Width = GLfloat;
 using Size = float;
 
 using WindowHeight = int;
@@ -35,8 +36,9 @@ using WindowWidth = int;
 using Error = int;
 constexpr WindowHeight CUSTOM_DefaultHeight = 800;
 constexpr WindowWidth CUSTOM_DefaultWidth = 800;
+using WindowSize = int;
 
 using ShaderType = int;
-using Positions = std::vector<int>;
+using Positions = std::vector<GLfloat>;
 
 //Default macros for the center width height and radius 
