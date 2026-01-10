@@ -1,5 +1,7 @@
 #pragma once
 #include "Vector2D.hpp"
+#include "../Textures/Textures.hpp"
+#include "../Shaders/ShadersClass.hpp"
 
 namespace Objects
 {
@@ -17,4 +19,20 @@ namespace Objects
         Vector2DCustom::vect2d _LeftDownCorner; 
         Vector2DCustom::vect2d _RectangleSizes; //Width in place of x and height in place of y
     };
+
+    class GameObject 
+    {
+        public:
+        GameObject(const XValue& XPosition, const YValue& YPosition,const XValue& width, const YValue& height, GetShaderType::TileType TextureType);
+
+        private:
+        Rectangle _HitBox;
+        Texture _Texture;
+    };
+    //A GameObject will be a rectangle and will have a texture
+    
+    class Player: public GameObject
+    {
+    };
+    // The player will be a GameObject
 }

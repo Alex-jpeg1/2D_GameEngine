@@ -12,8 +12,7 @@ Texture::Texture(const std::string& fileName)
     ImageHeight height;
     ImageChannels channels;
 
-    FILE* f = fopen(fileName.c_str(), "rb"); 
-    Data_CStyle Data = stbi_load_from_file(f, &width, &height, &channels, STBI_rgb_alpha);
+    Data_CStyle Data = stbi_load(fileName.c_str(), &width, &height, &channels, STBI_rgb_alpha);
 
     glCreateTextures(GL_TEXTURE_2D, 1, &_ID);
     glBindTexture(GL_TEXTURE_2D, _ID);
@@ -24,6 +23,11 @@ Texture::Texture(const std::string& fileName)
                 );
 
     stbi_image_free(Data);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 Texture::~Texture()
 {

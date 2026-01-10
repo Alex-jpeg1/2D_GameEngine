@@ -10,21 +10,22 @@ std::string GetFileContent(const std::string& file);
 
 namespace GetShaderType
 {
+    enum class TileType
+    {
+        Air,
+        UngrassedGround,
+        GrassedGround,
+        Stone,
+        Leaf,
+        TreeStem,
+        Player,
+    };
     class AllocateShaders
     {
         public:
 
         private:
-        enum class TileType
-        {
-            Air,
-            UngrassedGround,
-            GrassedGround,
-            Stone,
-            Leaf,
-            TreeStem,
-            Player,
-        };
+
     };
 }
 

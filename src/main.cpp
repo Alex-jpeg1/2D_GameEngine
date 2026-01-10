@@ -11,7 +11,7 @@
 #include <vector>
 #include "Shaders/ShadersClass.hpp"
 #include "objects/objects.hpp"
-#include <glm/gtc/matrix_transform.hpp>
+#include "Textures//Textures.hpp"
 
 std::vector<GLuint> indices =
 {
@@ -79,11 +79,10 @@ EmptyReturn Update()
     
     Shader shaderProgram("../src/Shaders/ShadersInfo/default.vert", "../src/Shaders/ShadersInfo/default.frag");
 
-    Objects::Rectangle TestRectangle = Objects::Rectangle(100,100,100,100,1);
-
+    Objects::Rectangle TestRectangle = Objects::Rectangle(0,0,800,800,1);
+    Texture NewTexture("../src/Textures/Images/johnPork.jpg");
     VAO _VAO;
     _VAO.Bind();
-
     std::vector<GLfloat> vertices = TestRectangle.GetPositions(); 
     VBO _VBO(vertices, vertices.size() * sizeof(GLfloat));
     EBO _EBO(indices, indices.size() * sizeof(GLuint));
@@ -114,11 +113,12 @@ EmptyReturn Update()
 	_EBO.Delete();
 	shaderProgram.Delete();
     glfwDestroyWindow(window);
-    glfwTerminate();
+    //glfwTerminate();
 }
 
 int main()
 {
     Update();
+    glfwTerminate();
     return 0;
 }

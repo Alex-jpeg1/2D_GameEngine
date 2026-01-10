@@ -26,6 +26,9 @@ add_executable(MyApp
     src/VAO/VAO.cpp
     src/VBO/VBO.cpp
     gladsrc/glad.c
+    src/Textures/Textures.cpp
+    src/extern/stb_image.h
+    src/resources/resources.cpp
 )
 
 target_include_directories(MyApp PRIVATE 
