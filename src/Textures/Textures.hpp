@@ -15,6 +15,8 @@ class Texture
     ~Texture();
     EmptyReturn Load();
 
+
     private:
+
     GLuint _ID;
 };

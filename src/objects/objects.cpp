@@ -2,8 +2,8 @@
 #include <GLFW/glfw3.h>
 #include <cstddef>
 
-Objects::Rectangle::Rectangle(const XValue& xVal, const YValue& yVal, const Height& height, const Width& width, const ShaderType& ShaderTypeValue)
-    :_ShaderType{ShaderTypeValue},
+Objects::Rectangle::Rectangle(const XValue& xVal, const YValue& yVal, const Height& height, const Width& width)
+    :
      _LeftDownCorner( xVal, yVal),
      _RectangleSizes(width, height)
      {}
@@ -54,4 +54,46 @@ Positions Objects::Rectangle::GetNormalizedPositions(const Positions InitialValu
         }
     }
     return FinalValue;
+}
+
+Objects::GameObject::GameObject(const XValue& XPosition, const YValue& YPosition, const XValue& width, const YValue& height, GetShaderType::TileType TexType):
+    _HitBox(XPosition, YPosition,width, height),
+    _TexType(static_cast<TextureType>(TexType))
+{}
+
+Positions Objects::GameObject::TexturePositionsCalculations()
+{
+    Positions InitialPositions = _HitBox.GetPositions();
+    TextureColumns Line = GetLine();
+
+    for(std::size_t i = 0; i < NumberCorners; i++)
+    {
+        Positions CurrentCorner = GetPositionsTexture(static_cast<Corners>(i), Line);
+    }
+
+}
+
+TextureColumns Objects::GameObject::GetLine()
+{
+    return _TexType/MaximumTextureColumn;
+}
+
+[[ nodiscard ]] Positions Objects::GameObject::GetPositionsTexture(Corners corner, TextureColumns line) noexcept
+{
+    switch (corner) 
+    {
+        case Corners::_LeftCornerDown:
+            {
+
+                return{}; 
+            }
+        case Corners::_LeftCornerUp:
+        case Corners::_RightCornerDown:
+        case Corners::_RightCornerUp:
+    }
+}
+
+GLfloat Objects::GameObject::GetPositionHeight()
+{
+
 }
