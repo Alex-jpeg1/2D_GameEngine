@@ -21,3 +21,7 @@ EmptyReturn EBO::Delete()
 {
     glDeleteBuffers(1, &_ID);
 }
+EBO::~EBO()
+{
+    Delete();
+}

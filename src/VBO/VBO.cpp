@@ -23,3 +23,8 @@ EmptyReturn VBO::Delete()
 {
     glDeleteBuffers(1, &_ID);
 }
+
+VBO::~VBO()
+{
+    Delete();
+}

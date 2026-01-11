@@ -9,7 +9,8 @@ class VBO
     public:
         VBO() = default;
         VBO(const std::vector<GLfloat>& vertices, const GLsizeiptr& size);
-
+        ~VBO();
+        
         [[ nodiscard ]] GLuint Get_ID() const noexcept { return _ID; };
 
         EmptyReturn Bind();

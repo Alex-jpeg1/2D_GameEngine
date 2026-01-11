@@ -54,7 +54,6 @@ EmptyReturn CreateContext(GLFWwindow** window)
 
 EmptyReturn Update()
 {
-    glfwInit();
 
     UpdateHints();
 
@@ -73,17 +72,20 @@ EmptyReturn Update()
             ;//it just continues
         }
     }
-
-    
     CreateContext(&window);
     
     Shader shaderProgram("../src/Shaders/ShadersInfo/default.vert", "../src/Shaders/ShadersInfo/default.frag");
 
-    Objects::Rectangle TestRectangle = Objects::Rectangle(0,0,800,800,1);
+    Objects::Rectangle TestRectangle = Objects::Rectangle(100,1000,100,100,1);
+    Objects::Rectangle TestRectangle1 =Objects::Rectangle(0,0,100,100,1);
+
     Texture NewTexture("../src/Textures/Images/johnPork.jpg");
     VAO _VAO;
     _VAO.Bind();
     std::vector<GLfloat> vertices = TestRectangle.GetPositions(); 
+    std::vector<GLfloat> vertices1 =TestRectangle1.GetPositions();
+    vertices.insert(vertices.end(), vertices1.begin(), vertices1.end());
+
     VBO _VBO(vertices, vertices.size() * sizeof(GLfloat));
     EBO _EBO(indices, indices.size() * sizeof(GLuint));
 
@@ -107,10 +109,6 @@ EmptyReturn Update()
 
         glfwPollEvents();
     }
-    
-    _VAO.Delete();
-	_VBO.Delete();
-	_EBO.Delete();
 	shaderProgram.Delete();
     glfwDestroyWindow(window);
     //glfwTerminate();
@@ -118,6 +116,7 @@ EmptyReturn Update()
 
 int main()
 {
+    glfwInit();
     Update();
     glfwTerminate();
     return 0;

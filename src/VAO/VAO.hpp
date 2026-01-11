@@ -8,6 +8,7 @@ class VAO
 {
 public:
     VAO();
+    ~VAO();
     EmptyReturn LinkVBO(VBO& VBO, const GLuint& layout);
     
     EmptyReturn Bind();
