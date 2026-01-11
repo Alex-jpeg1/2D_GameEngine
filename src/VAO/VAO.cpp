@@ -10,9 +10,11 @@ EmptyReturn VAO::LinkVBO(VBO& VBO, const GLuint& layout)
 {
     VBO.Bind();
 
-    glVertexAttribPointer(layout, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void *)(0));
+    glVertexAttribPointer(layout, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void *)(0));
     glEnableVertexAttribArray(layout);
 
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void *)(2 * sizeof(float)));
+    glEnableVertexAttribArray(1);
 
     VBO.Unbind();
 }

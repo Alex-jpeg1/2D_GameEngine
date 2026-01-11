@@ -66,11 +66,16 @@ Positions Objects::GameObject::TexturePositionsCalculations()
     Positions InitialPositions = _HitBox.GetPositions();
     TextureColumns Line = GetLine();
 
+    Positions result;
     for(std::size_t i = 0; i < NumberCorners; i++)
     {
         Positions CurrentCorner = GetPositionsTexture(static_cast<Corners>(i), Line);
-    }
+        result.emplace_back(InitialPositions[2*i]);
+        result.emplace_back(InitialPositions[2*i+1]);
 
+        result.insert(result.end(), CurrentCorner.begin(), CurrentCorner.end());
+    }
+    return result;
 }
 
 TextureColumns Objects::GameObject::GetLine()
@@ -83,17 +88,26 @@ TextureColumns Objects::GameObject::GetLine()
     switch (corner) 
     {
         case Corners::_LeftCornerDown:
-            {
-
-                return{}; 
-            }
+        {
+            return{0,1}; 
+        }
         case Corners::_LeftCornerUp:
+        {
+            return{0,0};
+        }
         case Corners::_RightCornerDown:
+        {
+            return{1,1};
+        }
         case Corners::_RightCornerUp:
+        {
+            return{1,0};
+        }
     }
+    return {};
 }
 
 GLfloat Objects::GameObject::GetPositionHeight()
 {
-
+    return 0;
 }
