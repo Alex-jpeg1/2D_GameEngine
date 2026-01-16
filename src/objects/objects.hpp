@@ -46,9 +46,4 @@ namespace Objects
         TextureType _TexType;
     };
     //A GameObject will be a rectangle and will have a texture
-    
-    class Player: public GameObject
-    {
-    };
-    // The player will be a GameObject
 }
