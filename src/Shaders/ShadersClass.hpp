@@ -29,6 +29,8 @@ namespace GetShaderType
     };
 }
 
+using ShaderCodeType = const char *;
+using ShaderType = int;
 class Shader
 {
     public:
@@ -51,6 +53,7 @@ class Shader
     //rule of 5 applied
 
     private:
+    EmptyReturn CreateShader(GLuint&, ShaderCodeType, ShaderType);
 
     GLuint _ID;
 };

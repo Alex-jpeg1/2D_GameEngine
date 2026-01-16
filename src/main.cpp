@@ -82,6 +82,7 @@ EmptyReturn Update()
     Objects::GameObject TestRectangle(100,100,100,100,static_cast<GetShaderType::TileType>(0));
     Objects::GameObject TestRectangle1(200,200,100,100,static_cast<GetShaderType::TileType>(0));    
     Texture NewTexture("../src/Textures/Images/johnPork.jpg");
+
     VAO _VAO;
     _VAO.Bind();
     std::vector<GLfloat> vertices = TestRectangle.TexturePositionsCalculations(); 
@@ -100,7 +101,7 @@ EmptyReturn Update()
 
     while(!glfwWindowShouldClose(window))
     {
-        glClearColor(0.07f ,0.13f ,0.17f , 1.0f);
+        glClearColor(0.0f ,0.8f ,0.8f , 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         shaderProgram.Activate();

@@ -27,6 +27,14 @@
     throw(errno);
 }
 
+EmptyReturn Shader::CreateShader(GLuint& shaderID, ShaderCodeType ShaderCode, ShaderType type)
+{
+    shaderID = glCreateShader(type);
+
+    glShaderSource(shaderID, 1, &ShaderCode, NULL);
+    glCompileShader(shaderID);
+}
+
 Shader::Shader(const std::string& vertexFile, const std::string& fragmentFile)
 {
     const std::string vertexCode = GetFileContent(vertexFile);
@@ -35,17 +43,11 @@ Shader::Shader(const std::string& vertexFile, const std::string& fragmentFile)
     const char * vertexSource = vertexCode.c_str();
     const char * fragmentSource = fragmentCode.c_str();
 
-    //Creating the vertexShader
-    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-
-    glShaderSource(vertexShader, 1, &vertexSource, NULL);
-    glCompileShader(vertexShader);
+    GLuint vertexShader;
+    CreateShader(vertexShader, vertexSource, GL_VERTEX_SHADER);
     
-    //Creating the fragment Shader
-    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-
-    glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
-    glCompileShader(fragmentShader);
+    GLuint fragmentShader;
+    CreateShader(fragmentShader, fragmentSource, GL_FRAGMENT_SHADER);
 
     _ID = glCreateProgram();
 
@@ -55,11 +57,6 @@ Shader::Shader(const std::string& vertexFile, const std::string& fragmentFile)
     glLinkProgram(_ID);
 
     glUseProgram(_ID);
-
-    glm::mat4 projection = glm::ortho(0.0f, CUSTOM_DefaultWidth * 1.0f, 0.0f, CUSTOM_DefaultHeight * 1.0f, -1.0f, 1.0f);
-
-    unsigned int projLoc = glGetUniformLocation(_ID, "projection");
-    glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
     
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
