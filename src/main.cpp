@@ -11,54 +11,11 @@ std::vector<GLuint> indices =
     6,5,7
 };
 
-EmptyReturn UpdateHints()
-{
-   
-}
-
-
-WC_Messages CreateWindow(GLFWwindow ** window, const WindowHeight& windowHeight = CUSTOM_DefaultHeight, const WindowWidth& windowWidth = CUSTOM_DefaultWidth)
-{
-    *window = glfwCreateWindow(CUSTOM_DefaultWidth, CUSTOM_DefaultHeight, "Game", NULL, NULL);
-
-    if(*window == NULL)
-    {
-        return WC_Messages::WC_Fail;
-    }
-
-    return WC_Messages::WC_Succesfull;
-}
-
-EmptyReturn CreateContext(GLFWwindow** window)
-{
-
-    glfwMakeContextCurrent(*window);
-    gladLoadGL();
-    glViewport(0,0,CUSTOM_DefaultWidth,CUSTOM_DefaultHeight);
-}
 
 EmptyReturn Update()
 {
+    WindowObject window;
 
-    UpdateHints();
-
-    GLFWwindow * window;
-    
-    switch(CreateWindow(&window))
-    {
-        case WC_Messages::WC_Fail:
-        {
-            glfwTerminate();
-            std::cerr << "Window creation failure";
-            std::exit( static_cast< Error > ( WC_Messages::WC_Fail ) );
-        }
-        case WC_Messages::WC_Succesfull:
-        {
-            ;//it just continues
-        }
-    }
-    CreateContext(&window);
-    
     Shader shaderProgram("../src/Shaders/ShadersInfo/default.vert", "../src/Shaders/ShadersInfo/default.frag");
 
 
@@ -82,7 +39,7 @@ EmptyReturn Update()
     _VBO.Unbind();
     _EBO.Unbind();
 
-    while(!glfwWindowShouldClose(window))
+    while(!window.WindowShouldClose())
     {
         glClearColor(0.0f ,0.8f ,0.8f , 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
@@ -92,12 +49,10 @@ EmptyReturn Update()
         _VAO.Bind();
 		glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
 
-        glfwSwapBuffers(window);
-
+        window.BufferSwap();
         glfwPollEvents();
     }
 	shaderProgram.Delete();
-    glfwDestroyWindow(window);
     //glfwTerminate();
 }
 

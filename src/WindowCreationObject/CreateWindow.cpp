@@ -1,5 +1,6 @@
 #include "CreateWindow.hpp"
 #include <GLFW/glfw3.h>
+#include <initializer_list>
 
 WindowObject::WindowObject()
     :
@@ -9,18 +10,49 @@ WindowObject::WindowObject(const WindowHeight& windowHeight, const WindowWidth& 
     :
     _WindowHeight{windowHeight},
     _WindowWidth{windowWidth},
-    _window{glfwCreateWindow(_WindowWidth, _WindowHeight, "Game", NULL, NULL)}
+    _ErrorMsg{WC_Messages::WC_Succesfull}
 {
+
+    DefaultHints();
+
+    _window = glfwCreateWindow(_WindowWidth, _WindowHeight, "Game", NULL, NULL);
+    
     if(_window == NULL)
     {
-        ErrorMsg = WC_Messages::WC_Fail;
+        _ErrorMsg = WC_Messages::WC_Fail;
     }
+
+    if(_ErrorMsg == WC_Messages::WC_Succesfull)
+    {
+        CreateContext();
+    }
+}
+
+WindowObject::~WindowObject()
+{
+    glfwDestroyWindow(_window);
 }
 
 EmptyReturn WindowObject::DefaultHints()
 {
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    SetHints({
+            {GLFW_CONTEXT_VERSION_MAJOR,3},
+            {GLFW_CONTEXT_VERSION_MINOR, 3},
+            {GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE}
+            });
 }
 
+EmptyReturn WindowObject::SetHints(std::initializer_list<WindowHint> WindowHints)
+{
+    for(const WindowHint& Hint: WindowHints)
+    {
+        glfwWindowHint(Hint.target, Hint.Value);
+    }
+}
+EmptyReturn WindowObject::CreateContext()
+{
+
+    glfwMakeContextCurrent(_window);
+    gladLoadGL();
+    glViewport(0,0,_WindowWidth,_WindowHeight);
+}

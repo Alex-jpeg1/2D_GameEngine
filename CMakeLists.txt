@@ -29,6 +29,9 @@ add_executable(MyApp
     src/Textures/Textures.cpp
     src/extern/stb_image.h
     src/resources/resources.cpp
+    src/WindowCreationObject/CreateWindow.hpp
+    src/WindowCreationObject/CreateWindow.cpp
+
 )
 
 target_include_directories(MyApp PRIVATE 

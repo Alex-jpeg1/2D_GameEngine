@@ -13,29 +13,44 @@
 #include "../Shaders/ShadersClass.hpp"
 #include "../objects/objects.hpp"
 #include "../Textures//Textures.hpp"
-
+#include <initializer_list>
 enum class WC_Messages
 {
     WC_Succesfull,
     WC_Fail
 };
 
+
+
 class WindowObject
 {
+    private:
+    
+    struct WindowHint
+    {
+        int target;
+        int Value;
+    };
+
     public:
     WindowObject();
     WindowObject(const WindowHeight&, const WindowWidth& windowWidth);
 
     EmptyReturn DefaultHints();
-
+    EmptyReturn SetHints(std::initializer_list<WindowHint>);
     ~WindowObject();
 
-    WC_Messages GetCreationMessage() {return ErrorMsg;};
-    
+    WC_Messages GetCreationMessage() {return _ErrorMsg;};
+
+    bool WindowShouldClose() { return glfwWindowShouldClose(_window); }
+
+    EmptyReturn BufferSwap() { glfwSwapBuffers(_window); }
     private:
+
+    EmptyReturn CreateContext();
 
     const WindowHeight _WindowHeight;
     const WindowWidth _WindowWidth;
     GLFWwindow* _window;
-    WC_Messages ErrorMsg;
+    WC_Messages _ErrorMsg;
 };
