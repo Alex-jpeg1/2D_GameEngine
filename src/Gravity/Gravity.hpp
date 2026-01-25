@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
+#include "../resources/resources.hpp"
 
 namespace Alex
 
@@ -8,11 +8,11 @@ namespace Alex
 class GravityComponent
 {
     public:
-
+        EmptyReturn UpdateVelocity();
     private:
+        GLfloat velocity;
+        const GLfloat gravitationalAcceleration = 9.8;
 
-    GLfloat velocity;
-    const GLfloat gravitationalAcceleration = 9.8 ;
 };
 
 }

@@ -1,17 +1,7 @@
 #include <iostream>
-#include "../glad/glad.h"
-#include "resources/resources.hpp"
-#include <GLFW/glfw3.h>
-#include <cstddef>
-#include <iostream>
-#include "VAO/VAO.hpp"
-#include "VBO/VBO.hpp"
-#include "EBO/EBO.hpp"
-#include <math.h>
-#include <vector>
-#include "Shaders/ShadersClass.hpp"
-#include "objects/objects.hpp"
-#include "Textures//Textures.hpp"
+#include "WindowCreationObject/CreateWindow.hpp"
+
+
 
 std::vector<GLuint> indices =
 {
@@ -23,16 +13,9 @@ std::vector<GLuint> indices =
 
 EmptyReturn UpdateHints()
 {
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+   
 }
 
-enum class WC_Messages
-{
-    WC_Succesfull,
-    WC_Fail
-};
 
 WC_Messages CreateWindow(GLFWwindow ** window, const WindowHeight& windowHeight = CUSTOM_DefaultHeight, const WindowWidth& windowWidth = CUSTOM_DefaultWidth)
 {
@@ -121,7 +104,9 @@ EmptyReturn Update()
 int main()
 {
     glfwInit();
+    {   
     Update();
+    }
     glfwTerminate();
     return 0;
 }
