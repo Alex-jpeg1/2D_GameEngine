@@ -1,4 +1,3 @@
-#include <iostream>
 #include "WindowCreationObject/CreateWindow.hpp"
 
 
@@ -25,6 +24,7 @@ EmptyReturn Update()
 
     VAO _VAO;
     _VAO.Bind();
+    
     std::vector<GLfloat> vertices = TestRectangle.TexturePositionsCalculations(); 
     std::vector<GLfloat> vertices1 = TestRectangle1.TexturePositionsCalculations();
 

@@ -1,19 +1,7 @@
 #pragma once
 
-#include "../../glad/glad.h"
-#include "../resources/resources.hpp"
-#include <GLFW/glfw3.h>
-#include <cstddef>
-#include <iostream>
-#include "../VAO/VAO.hpp"
-#include "../VBO/VBO.hpp"
-#include "../EBO/EBO.hpp"
-#include <math.h>
-#include <vector>
-#include "../Shaders/ShadersClass.hpp"
-#include "../objects/objects.hpp"
-#include "../Textures//Textures.hpp"
-#include <initializer_list>
+#include "../GameEngine_all.hpp"
+
 enum class WC_Messages
 {
     WC_Succesfull,
@@ -36,15 +24,21 @@ class WindowObject
     WindowObject();
     WindowObject(const WindowHeight&, const WindowWidth& windowWidth);
 
+    WindowObject(const WindowObject&) = delete;
+    void operator=(const WindowObject&) = delete;
+
+    WindowObject(WindowObject&&);
+    WindowObject operator=(WindowObject&&);
+
     EmptyReturn DefaultHints();
     EmptyReturn SetHints(std::initializer_list<WindowHint>);
     ~WindowObject();
 
-    WC_Messages GetCreationMessage() {return _ErrorMsg;};
+    [[ nodiscard ]] WC_Messages GetCreationMessage() noexcept {return _ErrorMsg;};
 
-    bool WindowShouldClose() { return glfwWindowShouldClose(_window); }
+    [[ nodiscard ]] bool WindowShouldClose() noexcept { return glfwWindowShouldClose(_window); }
 
-    EmptyReturn BufferSwap() { glfwSwapBuffers(_window); }
+    EmptyReturn BufferSwap() noexcept { glfwSwapBuffers(_window); }
     private:
 
     EmptyReturn CreateContext();
