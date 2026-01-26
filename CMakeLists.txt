@@ -31,6 +31,7 @@ add_executable(MyApp
     src/resources/resources.cpp
     src/WindowCreationObject/CreateWindow.hpp
     src/WindowCreationObject/CreateWindow.cpp
+    src/GameLoopObject/GameObject.cpp
 
 )
 

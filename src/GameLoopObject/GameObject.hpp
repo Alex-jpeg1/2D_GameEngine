@@ -3,6 +3,11 @@
 #include "../GameEngine_all.hpp"
 #include "../WindowCreationObject/CreateWindow.hpp"
 
+class ShaderSupport
+{
+    
+};
+
 class GameObject
 {
     public:
@@ -12,9 +17,8 @@ class GameObject
     void operator=(const GameObject&) = delete;
     //we do not want the GameObject to be copied
 
-    //TO-DO implement move operator and move constructor
-    GameObject(GameObject&&); 
-    GameObject operator=(GameObject&&);
+    GameObject(GameObject&&) = delete; 
+    GameObject operator=(GameObject&&) = delete;
     //The GameObject can be moved but it will require custom implementation based on the purpose
 
     //TO-DO implement Main Game loop
@@ -27,3 +31,4 @@ class GameObject
     //A game object will run on a single window
     //The user does not need to have direct acces to this window
 };
+
