@@ -8,17 +8,17 @@ class ShaderSupport
     
 };
 
-class GameObject
+class Factory
 {
     public:
-    GameObject();
+    Factory();
 
-    GameObject(const GameObject&) = delete;
-    void operator=(const GameObject&) = delete;
+    Factory(const Factory&) = delete;
+    void operator=(const Factory&) = delete;
     //we do not want the GameObject to be copied
 
-    GameObject(GameObject&&) = delete; 
-    GameObject operator=(GameObject&&) = delete;
+    Factory(Factory&&) = delete; 
+    Factory operator=(Factory&&) = delete;
     //The GameObject can be moved but it will require custom implementation based on the purpose
 
     //TO-DO implement Main Game loop

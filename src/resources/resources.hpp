@@ -49,4 +49,10 @@ constexpr TextureNumber MaximumTextures = 1;
 constexpr TextureColumns MaximumTextureColumn = 4;
 
 constexpr int NumberCorners = 4;
+
+enum class GravityEnabler 
+{
+    GravityDisabled,
+    GravityEnabled
+};
 //Default macros for the center width height and radius 

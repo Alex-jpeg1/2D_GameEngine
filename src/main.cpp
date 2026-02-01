@@ -4,7 +4,7 @@ int main()
 {
     glfwInit();
     {   
-        GameObject MainObject;
+        Factory MainObject;
         MainObject.MainGameLoop();
     }
     glfwTerminate();

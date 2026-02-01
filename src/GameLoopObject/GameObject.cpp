@@ -1,6 +1,6 @@
 #include "GameObject.hpp"
 
-GameObject::GameObject():
+Factory::Factory():
     _window{}
 {}
 std::vector<GLuint> indices =
@@ -11,7 +11,7 @@ std::vector<GLuint> indices =
     6,5,7
 };
 
-EmptyReturn GameObject::MainGameLoop()
+EmptyReturn Factory::MainGameLoop()
 {
     Shader shaderProgram("../src/Shaders/ShadersInfo/default.vert", "../src/Shaders/ShadersInfo/default.frag");
 
