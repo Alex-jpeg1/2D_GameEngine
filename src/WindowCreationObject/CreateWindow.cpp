@@ -1,6 +1,7 @@
 #include "CreateWindow.hpp"
 #include <GLFW/glfw3.h>
 #include <initializer_list>
+#include <glm/gtc/matrix_transform.hpp>
 
 WindowObject::WindowObject()
     :
@@ -16,7 +17,6 @@ WindowObject::WindowObject(const WindowHeight& windowHeight, const WindowWidth& 
     DefaultHints();
 
     _window = glfwCreateWindow(_WindowWidth, _WindowHeight, "Game", NULL, NULL);
-    
     if(_window == NULL)
     {
         _ErrorMsg = WC_Messages::WC_Fail;

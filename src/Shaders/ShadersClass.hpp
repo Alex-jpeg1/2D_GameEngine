@@ -49,6 +49,7 @@ class Shader
     Shader(Shader&& other) = default;
     Shader& operator=(Shader&& other) = default;
 
+    int UploadProjectionMatrix(std::string);
     ~Shader() = default;
     //rule of 5 applied
 
@@ -57,3 +58,4 @@ class Shader
 
     GLuint _ID;
 };
+

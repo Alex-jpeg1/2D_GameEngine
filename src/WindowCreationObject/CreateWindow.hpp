@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../GameEngine_all.hpp"
+#include <glm/glm.hpp>
 
 enum class WC_Messages
 {
@@ -42,9 +43,10 @@ class WindowObject
     private:
 
     EmptyReturn CreateContext();
-
+    EmptyReturn UploadProjectionMatrix();
     const WindowHeight _WindowHeight;
     const WindowWidth _WindowWidth;
     GLFWwindow* _window;
     WC_Messages _ErrorMsg;
+
 };

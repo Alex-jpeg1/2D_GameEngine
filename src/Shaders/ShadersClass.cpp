@@ -71,3 +71,7 @@ EmptyReturn Shader::Delete()
 {
     glDeleteProgram(_ID);
 }
+int Shader::UploadProjectionMatrix(std::string MatrixName)
+{
+    int ID = glGetUniformLocation(_ID, MatrixName.c_str());
+}

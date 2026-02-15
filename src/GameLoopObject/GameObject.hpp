@@ -28,6 +28,8 @@ class Factory
     private:
 
     WindowObject _window;
+    glm::mat4 _projection;
+    int _projectionID;
     //A game object will run on a single window
     //The user does not need to have direct acces to this window
 };
