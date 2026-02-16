@@ -33,13 +33,13 @@ EmptyReturn Factory::MainGameLoop()
     Texture NewTexture("../src/Textures/Images/johnPork.jpg");
 
     CustomMat4::Matrix projectionMatrix(0, 800, 0, 800);
+
     VAO _VAO;
     _VAO.Bind();
 
     std::vector<GLfloat> vertices = TestRectangle.TexturePositionsCalculations(); 
     std::vector<GLfloat> vertices1 = TestRectangle1.TexturePositionsCalculations();
     vertices.insert(vertices.end(), vertices1.begin(), vertices1.end());
-
     VBO _VBO(vertices, vertices.size() * sizeof(GLfloat));
     EBO _EBO(indices, indices.size() * sizeof(GLuint));
 
@@ -57,7 +57,7 @@ EmptyReturn Factory::MainGameLoop()
         shaderProgram.Activate();
 
         _projectionID = shaderProgram.UploadProjectionMatrix("Projection");
-        glUniformMatrix4fv(_projectionID, 1, GL_FALSE, glm::value_ptr(_window.GetProjectionMatrix()));
+        glUniformMatrix4fv(_projectionID, 1, GL_FALSE, projectionMatrix.GetData().data());
 
         NewTexture.Load();
         _VAO.Bind();

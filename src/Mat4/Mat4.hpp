@@ -12,10 +12,10 @@ namespace CustomMat4
             Matrix(GLfloat, GLfloat, GLfloat, GLfloat );
             
             Matrix(GLfloat, int = 4);
+            [[ nodiscard ]] std::vector<GLfloat> GetData();
         private:
             EmptyReturn init(int, GLfloat = 1.0f);
             EmptyReturn PopulateMatrix(GLfloat, GLfloat, GLfloat, GLfloat, int = 4);
-
-            std::vector<GLfloat> Vertexes;
+            std::vector<GLfloat> _Vertexes;
     };
 }

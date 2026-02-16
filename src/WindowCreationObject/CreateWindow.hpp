@@ -2,6 +2,7 @@
 
 #include "../GameEngine_all.hpp"
 #include <glm/glm.hpp>
+#include "../Mat4/Mat4.hpp"
 
 enum class WC_Messages
 {
@@ -38,7 +39,7 @@ class WindowObject
     [[ nodiscard ]] WC_Messages GetCreationMessage() noexcept {return _ErrorMsg;};
 
     [[ nodiscard ]] bool WindowShouldClose() noexcept { return glfwWindowShouldClose(_window); }
-    [[ nodiscard ]] glm::mat4 GetProjectionMatrix() { return _projection; }
+    [[ nodiscard ]] CustomMat4::Matrix GetProjectionMatrix() { return _projection; }
 
     EmptyReturn BufferSwap() noexcept { glfwSwapBuffers(_window); }
     private:
@@ -49,5 +50,6 @@ class WindowObject
     GLFWwindow* _window;
     WC_Messages _ErrorMsg;
 
-    glm::mat4 _projection;
+    CustomMat4::Matrix _projection;
+
 };

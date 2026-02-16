@@ -17,9 +17,7 @@ WindowObject::WindowObject(const WindowHeight& windowHeight, const WindowWidth& 
 
     DefaultHints();
     _window = glfwCreateWindow(_WindowWidth, _WindowHeight, "Game", NULL, NULL);
-    _projection = glm::ortho(0, _WindowWidth, _WindowHeight, 0);
-
-    std::cout<<glm::to_string(_projection);
+    
     if(_window == NULL)
     {
         _ErrorMsg = WC_Messages::WC_Fail;

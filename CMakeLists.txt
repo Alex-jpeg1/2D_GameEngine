@@ -32,7 +32,8 @@ add_executable(MyApp
     src/WindowCreationObject/CreateWindow.hpp
     src/WindowCreationObject/CreateWindow.cpp
     src/GameLoopObject/GameObject.cpp
-
+    src/Mat4/Mat4.cpp
+    
 )
 
 target_include_directories(MyApp PRIVATE 
