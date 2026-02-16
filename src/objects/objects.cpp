@@ -19,14 +19,14 @@ Positions Objects::Rectangle::GetPositions()
     RightCornerX = LeftCornerX + _RectangleSizes.GetWidth();
     RightCornerY = LeftCornerY + _RectangleSizes.GetHeight();
 
-    return GetNormalizedPositions({LeftCornerX,
-                                                  LeftCornerY, 
-                                                  RightCornerX,
-                                                  LeftCornerY, 
-                                                  LeftCornerX, 
-                                                  RightCornerY, 
-                                                  RightCornerX, 
-                                                  RightCornerY});
+    return {LeftCornerX,
+            LeftCornerY, 
+            RightCornerX,
+            LeftCornerY, 
+            LeftCornerX, 
+            RightCornerY, 
+            RightCornerX, 
+            RightCornerY};
 }
 
 GLfloat Objects::Rectangle::Normalize(const GLfloat& Value, const WindowSize& WindowValue)

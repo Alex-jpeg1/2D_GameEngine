@@ -38,15 +38,16 @@ class WindowObject
     [[ nodiscard ]] WC_Messages GetCreationMessage() noexcept {return _ErrorMsg;};
 
     [[ nodiscard ]] bool WindowShouldClose() noexcept { return glfwWindowShouldClose(_window); }
+    [[ nodiscard ]] glm::mat4 GetProjectionMatrix() { return _projection; }
 
     EmptyReturn BufferSwap() noexcept { glfwSwapBuffers(_window); }
     private:
 
     EmptyReturn CreateContext();
-    EmptyReturn UploadProjectionMatrix();
     const WindowHeight _WindowHeight;
     const WindowWidth _WindowWidth;
     GLFWwindow* _window;
     WC_Messages _ErrorMsg;
 
+    glm::mat4 _projection;
 };

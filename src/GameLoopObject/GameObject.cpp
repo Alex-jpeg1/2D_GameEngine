@@ -1,4 +1,6 @@
 #include "GameObject.hpp"
+#include <glm/gtc/type_ptr.hpp>
+#include <iostream>
 
 Factory::Factory():
     _window{}
@@ -10,6 +12,15 @@ std::vector<GLuint> indices =
     4, 5, 6,
     6,5,7
 };
+
+std::ostream& operator<<(std::ostream& os, std::vector<GLfloat> valori)
+{
+    for(auto x:valori)
+    {
+        os<<x<<" ";
+    }
+    return os;
+}
 
 EmptyReturn Factory::MainGameLoop()
 {
@@ -25,6 +36,8 @@ EmptyReturn Factory::MainGameLoop()
 
     std::vector<GLfloat> vertices = TestRectangle.TexturePositionsCalculations(); 
     std::vector<GLfloat> vertices1 = TestRectangle1.TexturePositionsCalculations();
+
+    std::cout<<vertices1;
 
     vertices.insert(vertices.end(), vertices1.begin(), vertices1.end());
 
@@ -43,6 +56,10 @@ EmptyReturn Factory::MainGameLoop()
 
         shaderProgram.Activate();
 
+        _projectionID = shaderProgram.UploadProjectionMatrix("Projection");
+        glUniformMatrix4fv(_projectionID, 1, GL_FALSE, glm::value_ptr(_window.GetProjectionMatrix()));
+
+        NewTexture.Load();
         _VAO.Bind();
 		glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
 
