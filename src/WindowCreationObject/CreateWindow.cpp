@@ -1,8 +1,9 @@
 #include "CreateWindow.hpp"
 #include <GLFW/glfw3.h>
 #include <initializer_list>
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtc/matrix_transform.hpp>
-
+#include <glm/gtx/string_cast.hpp>
 WindowObject::WindowObject()
     :
     WindowObject(CUSTOM_DefaultHeight, CUSTOM_DefaultWidth)
@@ -15,9 +16,10 @@ WindowObject::WindowObject(const WindowHeight& windowHeight, const WindowWidth& 
 {
 
     DefaultHints();
-
     _window = glfwCreateWindow(_WindowWidth, _WindowHeight, "Game", NULL, NULL);
-    _projection = glm::ortho(0, _WindowWidth, 0, _WindowHeight, -100, 100);
+    _projection = glm::ortho(0, _WindowWidth, _WindowHeight, 0);
+
+    std::cout<<glm::to_string(_projection);
     if(_window == NULL)
     {
         _ErrorMsg = WC_Messages::WC_Fail;

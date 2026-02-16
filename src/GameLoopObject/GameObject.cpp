@@ -1,6 +1,7 @@
 #include "GameObject.hpp"
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
+#include "../Mat4/Mat4.hpp"
 
 Factory::Factory():
     _window{}
@@ -31,14 +32,12 @@ EmptyReturn Factory::MainGameLoop()
     Objects::GameObject TestRectangle1(200,200,100,100,static_cast<GetShaderType::TileType>(0));    
     Texture NewTexture("../src/Textures/Images/johnPork.jpg");
 
+    CustomMat4::Matrix projectionMatrix(0, 800, 0, 800);
     VAO _VAO;
     _VAO.Bind();
 
     std::vector<GLfloat> vertices = TestRectangle.TexturePositionsCalculations(); 
     std::vector<GLfloat> vertices1 = TestRectangle1.TexturePositionsCalculations();
-
-    std::cout<<vertices1;
-
     vertices.insert(vertices.end(), vertices1.begin(), vertices1.end());
 
     VBO _VBO(vertices, vertices.size() * sizeof(GLfloat));
@@ -49,6 +48,7 @@ EmptyReturn Factory::MainGameLoop()
     _VAO.Unbind();
     _VBO.Unbind();
     _EBO.Unbind();
+    
     while(!_window.WindowShouldClose())
     {
         glClearColor(0.0f ,0.8f ,0.8f , 1.0f);
