@@ -6,7 +6,7 @@
 class Player:public Objects::GameObject
 {
     public:
-
+        Player();
     private:
     Alex::GravityComponent _Gravity;
 };

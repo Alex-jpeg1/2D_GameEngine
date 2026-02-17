@@ -28,7 +28,7 @@ namespace Objects
 
         Positions TexturePositionsCalculations();
 
-        private:
+        protected:
 
         enum class Corners
         {

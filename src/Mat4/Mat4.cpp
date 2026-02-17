@@ -29,10 +29,10 @@ EmptyReturn CustomMat4::Matrix::init(int matrixSize, GLfloat val)
 
 EmptyReturn CustomMat4::Matrix::PopulateMatrix(GLfloat left, GLfloat right, GLfloat bottom, GLfloat top,int matrixSize)
 {
-        _Vertexes[0] = 1.0f/(right - left);
+        _Vertexes[0] = 2.0f/(right - left);
         _Vertexes[12] = -1.0f;
 
-        _Vertexes[5] = 1.0f/(top-bottom);
+        _Vertexes[5] = 2.0f/(top-bottom);
         _Vertexes[13] = -1.0f;
 
         _Vertexes[10] = 0;
