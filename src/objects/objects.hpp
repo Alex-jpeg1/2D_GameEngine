@@ -1,6 +1,5 @@
 #pragma once
 #include "Vector2D.hpp"
-#include "../Textures/Textures.hpp"
 #include "../Shaders/ShadersClass.hpp"
 
 namespace Objects

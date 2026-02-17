@@ -2,7 +2,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 #include "../Mat4/ShaderMatrixFactory.hpp"
-
+#include "../objects/Player.hpp"
 Factory::Factory():
     _window{}
 {}
@@ -28,8 +28,8 @@ EmptyReturn Factory::MainGameLoop()
     Shader shaderProgram("../src/Shaders/ShadersInfo/default.vert", "../src/Shaders/ShadersInfo/default.frag");
 
 
-    Objects::GameObject TestRectangle(100,100,100,100,static_cast<GetShaderType::TileType>(0));
-    Objects::GameObject TestRectangle1(400,400,100,100,static_cast<GetShaderType::TileType>(0));
+    Player TestRectangle(100,100,100,100,static_cast<GetShaderType::TileType>(0));
+    Player TestRectangle1(400,400,100,100,static_cast<GetShaderType::TileType>(0));
     Texture NewTexture("../src/Textures/Images/johnPork.jpg");
 
     UMatrix::FOrtoghonalMatrix::OrtoghonalMatrixFactory mat4(shaderProgram,0,800,0,800);
