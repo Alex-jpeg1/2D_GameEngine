@@ -13,6 +13,7 @@ namespace CustomMat4
             
             Matrix(GLfloat, int = 4);
             [[ nodiscard ]] std::vector<GLfloat> GetData();
+            EmptyReturn UpdateMatrix(int, GLfloat);
         private:
             EmptyReturn init(int, GLfloat = 1.0f);
             EmptyReturn PopulateMatrix(GLfloat, GLfloat, GLfloat, GLfloat, int = 4);

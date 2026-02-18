@@ -45,3 +45,7 @@ std::vector<GLfloat> CustomMat4::Matrix::GetData()
 {
     return _Vertexes;
 }
+EmptyReturn CustomMat4::Matrix::UpdateMatrix(int poz, GLfloat val)
+{
+    _Vertexes[poz] = val;
+}

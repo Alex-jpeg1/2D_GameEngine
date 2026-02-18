@@ -2,12 +2,22 @@
 
 #include "Mat4.hpp"
 #include "../Shaders/ShadersClass.hpp"
+enum class Direction
+{
+    left,
+    right, 
+    down
+};
+enum class MatrixError
+{
+    UnknownValue
+};
 namespace UMatrix
 {
     class MatrixesUtils
     {
         public:
-            MatrixesUtils() = default;
+            //MatrixesUtils();
             MatrixesUtils(Shader&);
             virtual ~MatrixesUtils() = default;
 
@@ -21,7 +31,7 @@ namespace UMatrix
 
             virtual int UploadMatrix();
             
-            virtual EmptyReturn ModifyMatrix() = 0;
+            virtual EmptyReturn ModifyMatrix(Direction, GLfloat) = 0;
             
         protected:
             CustomMat4::Matrix _matrix;
@@ -34,7 +44,17 @@ namespace UMatrix
         {
             public:
                 OrtoghonalMatrixFactory(Shader&, GLfloat, GLfloat, GLfloat, GLfloat);
-                EmptyReturn ModifyMatrix() override {};
+                EmptyReturn ModifyMatrix(Direction, GLfloat) override {};
+            private:
+        };
+    }
+    namespace UTransformationMatrix
+    {
+        class TransformationMatrixUtils: public MatrixesUtils 
+        {
+            public:
+                TransformationMatrixUtils(Shader&);
+                EmptyReturn ModifyMatrix(Direction, GLfloat) override;
             private:
         };
     }
